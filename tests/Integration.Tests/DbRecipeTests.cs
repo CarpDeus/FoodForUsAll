@@ -11,6 +11,7 @@ using Domain;
 
 namespace Integration.Tests
 {
+    [TestFixture]
     public class DbRecipeTests
     {
         public DbRecipeTests()
@@ -22,7 +23,7 @@ namespace Integration.Tests
             recipeRepository = new RecipeRepository(root.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value);
         }
 
-        [SetUp]
+        [OneTimeSetUp]
         public async Task Setup()
         {
             _scope = new TransactionScope();
@@ -38,13 +39,6 @@ namespace Integration.Tests
             await recipeRepository.AddIngredient(waterIngredient);
             spaghettiIngredient = new Ingredient { Name = "Spaghetti", Description = "Medium Dried Spaghetti" };
             await recipeRepository.AddIngredient(spaghettiIngredient);
-        }
-
-        [TearDown]
-        public async Task TearDown()
-        {
-            _scope.Dispose(); // rollback
-            _scope = null;
         }
 
         [Test]
@@ -85,7 +79,7 @@ namespace Integration.Tests
             await recipeRepository.AddRecipe(carbonaraRecipe);
 
             //Assert
-            Assert.That(carbonaraRecipe.Id != null);
+            Assert.That(carbonaraRecipe.Id != 0);
         }
 
         TransactionScope _scope;

@@ -111,21 +111,17 @@ namespace DbData
                             [Name],
                             [Description]
                         )
-                        OUTPUT INSERTED.ID
+                        OUTPUT Inserted.Id
                         VALUES (
                             @Name,
                             @Description
                         );";
-
-                cmd.Parameters.Add("@Id", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.Parameters.AddWithValue("@Name", ingredient.Name ?? string.Empty);
                 cmd.Parameters.AddWithValue("@Description", ingredient.Description ?? string.Empty);
 
                 await conn.OpenAsync();
 
-                await cmd.ExecuteNonQueryAsync();
-
-                ingredient.Id = Convert.ToInt32(cmd.Parameters["@Id"].Value);
+                ingredient.Id = (int)await cmd.ExecuteScalarAsync();
                 
                 conn.Close();
             }
@@ -250,23 +246,19 @@ namespace DbData
                             [Description],
                             AuthorId
                         )
-                        OUTPUT INSERTED.ID
+                        OUTPUT Inserted.Id
                         VALUES (
                             @Name,
                             @Description,
                             @AuthorId
                         );";
-
-                cmd.Parameters.Add("@Id", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.Parameters.AddWithValue("@Name", recipe.Name ?? string.Empty);
                 cmd.Parameters.AddWithValue("@Description", recipe.Description ?? string.Empty);
                 cmd.Parameters.AddWithValue("@AuthorId", recipe.AuthorId);
 
                 await conn.OpenAsync();
 
-                await cmd.ExecuteNonQueryAsync();
-
-                recipe.Id = Convert.ToInt32(cmd.Parameters["@Id"].Value);
+                recipe.Id = (int)await cmd.ExecuteScalarAsync();
 
                 conn.Close();
             }
@@ -322,6 +314,8 @@ namespace DbData
                         FROM Recipes.[Section]
                         WHERE Id = @Id;";
 
+                cmd.Parameters.AddWithValue("@Id", sectionId);
+
                 await conn.OpenAsync();
 
                 using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
@@ -353,26 +347,30 @@ namespace DbData
             if (_foodForUsAllConnectionString == null)
                 throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
 
+            if (ingredientSection.OrderId == 0)
+                ingredientSection.OrderId = NextRecipeSectionOrderId(recipeId, RecipeSectionType.Ingredient);
+
             using (var conn = new SqlConnection(_foodForUsAllConnectionString))
             {
                 SqlCommand cmd = conn.CreateCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText =
                     @"  INSERT INTO Recipes.[Section] (
+                            [RecipeId],
                             [ParentId],
 	                        [OrderId],
 	                        [Name],
 	                        [Type]
                         )
-                        OUTPUT INSERTED.ID
+                        OUTPUT Inserted.Id
                         VALUES (
+                            @RecipeId,
                             @ParentId,
 	                        @OrderId,
 	                        @Name,
 	                        @Type
                         );";
-
-                cmd.Parameters.Add("@Id", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
                 cmd.Parameters.AddWithValue("@ParentId", parentIngredientSectionId == null ? DBNull.Value : parentIngredientSectionId.Value);
                 cmd.Parameters.AddWithValue("@OrderId", ingredientSection.OrderId);
                 cmd.Parameters.AddWithValue("@Name", ingredientSection.Name ?? string.Empty);
@@ -380,9 +378,7 @@ namespace DbData
 
                 await conn.OpenAsync();
 
-                await cmd.ExecuteNonQueryAsync();
-
-                ingredientSection.Id = Convert.ToInt32(cmd.Parameters["@Id"].Value);
+                ingredientSection.Id = (int)await cmd.ExecuteScalarAsync();
 
                 conn.Close();
             }
@@ -555,13 +551,7 @@ namespace DbData
                 throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
 
             if (recipeIngredient.OrderId == 0)
-            {
-                IngredientSection ingSec = await GetIngredientSection(recipeId, sectionId);
-                if (ingSec.RecipeIngredients.Count == 0)
-                    recipeIngredient.OrderId = 1;
-                else
-                    recipeIngredient.OrderId = ingSec.RecipeIngredients.Max(x => x.OrderId) + 1;
-            }
+                recipeIngredient.OrderId = NextRecipeIngredientItemOrderId(sectionId);
 
             using (var conn = new SqlConnection(_foodForUsAllConnectionString))
             {
@@ -575,7 +565,7 @@ namespace DbData
                             OrderId,
                             IngredientId
                         )
-                        OUTPUT INSERTED.ID
+                        OUTPUT Inserted.Id
                         VALUES (
                             @RecipeId,
                             @SectionId,
@@ -584,7 +574,6 @@ namespace DbData
                             @IngredientId
                         );";
 
-                cmd.Parameters.Add("@Id", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.Parameters.AddWithValue("@RecipeId", recipeId);
                 cmd.Parameters.AddWithValue("@SectionId", sectionId);
                 cmd.Parameters.AddWithValue("@Quantity", (object)recipeIngredient.Quantity ?? DBNull.Value);
@@ -593,9 +582,7 @@ namespace DbData
 
                 await conn.OpenAsync();
 
-                await cmd.ExecuteNonQueryAsync();
-
-                recipeIngredient.Id = Convert.ToInt32(cmd.Parameters["@Id"].Value);
+                recipeIngredient.Id = (int)await cmd.ExecuteScalarAsync();
 
                 conn.Close();
             }
@@ -723,36 +710,38 @@ namespace DbData
             if (_foodForUsAllConnectionString == null)
                 throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
 
+            if (instructionSection.OrderId == 0)
+                instructionSection.OrderId = NextRecipeSectionOrderId(recipeId, RecipeSectionType.Instruction);
+
             using (var conn = new SqlConnection(_foodForUsAllConnectionString))
             {
                 SqlCommand cmd = conn.CreateCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText =
                     @"  INSERT INTO Recipes.[Section] (
+                            [RecipeId],
                             [ParentId],
 	                        [OrderId],
 	                        [Name],
 	                        [Type]
                         )
-                        OUTPUT INSERTED.ID
+                        OUTPUT Inserted.Id
                         VALUES (
+                            @RecipeId,
                             @ParentId,
 	                        @OrderId,
 	                        @Name,
 	                        @Type
                         );";
-
-                cmd.Parameters.Add("@Id", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
                 cmd.Parameters.AddWithValue("@ParentId", parentInstructionSectionId == null ? DBNull.Value : parentInstructionSectionId.Value);
                 cmd.Parameters.AddWithValue("@OrderId", instructionSection.OrderId);
                 cmd.Parameters.AddWithValue("@Name", instructionSection.Name ?? string.Empty);
-                cmd.Parameters.AddWithValue("@Type", Enum.GetName(typeof(RecipeSectionType), RecipeSectionType.Ingredient));
+                cmd.Parameters.AddWithValue("@Type", Enum.GetName(typeof(RecipeSectionType), RecipeSectionType.Instruction));
 
                 await conn.OpenAsync();
 
-                await cmd.ExecuteNonQueryAsync();
-
-                instructionSection.Id = Convert.ToInt32(cmd.Parameters["@Id"].Value);
+                instructionSection.Id = (int)await cmd.ExecuteScalarAsync();
 
                 conn.Close();
             }
@@ -778,6 +767,9 @@ namespace DbData
             if (_foodForUsAllConnectionString == null)
                 throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
 
+            if (recipeInstruction.OrderId == 0)
+                recipeInstruction.OrderId = NextRecipeInstructionItemOrderId(sectionId);
+
             using (var conn = new SqlConnection(_foodForUsAllConnectionString))
             {
                 SqlCommand cmd = conn.CreateCommand();
@@ -789,15 +781,13 @@ namespace DbData
                             OrderId,
                             [Description]
                         )
-                        OUTPUT INSERTED.ID
+                        OUTPUT Inserted.Id
                         VALUES (
                             @RecipeId,
                             @SectionId,
                             @OrderId,
                             @Description
                         );";
-
-                cmd.Parameters.Add("@Id", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                 cmd.Parameters.AddWithValue("@RecipeId", recipeId);
                 cmd.Parameters.AddWithValue("@SectionId", sectionId);
                 cmd.Parameters.AddWithValue("@OrderId", recipeInstruction.OrderId);
@@ -805,9 +795,7 @@ namespace DbData
 
                 await conn.OpenAsync();
 
-                await cmd.ExecuteNonQueryAsync();
-
-                recipeInstruction.Id = Convert.ToInt32(cmd.Parameters["@Id"].Value);
+                recipeInstruction.Id = (int)await cmd.ExecuteScalarAsync();
 
                 conn.Close();
             }
@@ -883,8 +871,8 @@ namespace DbData
                                 Name = name,
                                 Description = description,
                                 AuthorId = authorId,
-                                IngredientSections = GetTopLevelIngredientSections(id),
-                                InstructionSections = GetTopLevelInstructionSections(id),
+                                IngredientSections = await GetIngredientSectionsByRecipeId(id),
+                                InstructionSections = await GetInstructionSectionsByRecipeId(id),
                             };
                     }
                 }
@@ -1017,6 +1005,56 @@ namespace DbData
             return recipeInstructions;
         }
 
+        async Task<List<IngredientSection>> GetIngredientSectionsByRecipeId(int recipeId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<IngredientSection> ingredientSections = new List<IngredientSection>();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id,
+	                        OrderId,
+	                        [Name]
+                        FROM Recipes.[Section]
+                        WHERE RecipeId = @RecipeId
+                        AND ParentId IS NULL
+                        AND [Type] = 'Ingredient';";
+
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        int orderId = Convert.ToInt32(rdr["OrderId"]);
+                        string name = rdr["Name"].ToString();
+
+                        ingredientSections.Add(
+                            new IngredientSection
+                            {
+                                Id = id,
+                                OrderId = orderId,
+                                Name = name,
+                                RecipeIngredients = await GetRecipeIngredientsBySection(recipeId, id),
+                                Children = await GetIngredientSectionsByParentSection(recipeId, id),
+                            }
+                        );
+                    }
+                }
+            }
+
+            return ingredientSections;
+        }
+
         async Task<List<IngredientSection>> GetIngredientSectionsByParentSection(int recipeId, int parentSectionId)
         {
             if (_foodForUsAllConnectionString == null)
@@ -1069,6 +1107,56 @@ namespace DbData
             return ingredientSections;
         }
 
+        async Task<List<InstructionSection>> GetInstructionSectionsByRecipeId(int recipeId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<InstructionSection> instructionSections = new List<InstructionSection>();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id,
+	                        OrderId,
+	                        [Name]
+                        FROM Recipes.[Section]
+                        WHERE RecipeId = @RecipeId
+                        AND ParentId IS NULL
+                        AND [Type] = 'Instruction';";
+
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        int orderId = Convert.ToInt32(rdr["OrderId"]);
+                        string name = rdr["Name"].ToString();
+
+                        instructionSections.Add(
+                            new InstructionSection
+                            {
+                                Id = id,
+                                OrderId = orderId,
+                                Name = name,
+                                RecipeInstructions = await GetRecipeInstructionsBySection(recipeId, id),
+                                Children = await GetInstructionSectionsByParentSection(recipeId, id),
+                            }
+                        );
+                    }
+                }
+            }
+
+            return instructionSections;
+        }
+
         async Task<List<InstructionSection>> GetInstructionSectionsByParentSection(int recipeId, int parentSectionId)
         {
             if (_foodForUsAllConnectionString == null)
@@ -1119,6 +1207,89 @@ namespace DbData
             }
 
             return instructionSections;
+        }
+
+        int NextRecipeSectionOrderId(int recipeId, RecipeSectionType sectionType)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+	                        MAX(OrderId) OrderId
+                        FROM Recipes.Section
+                        WHERE RecipeId = @RecipeId
+                        AND [Type] = @Type;";
+
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+                cmd.Parameters.AddWithValue("@Type", Enum.GetName(typeof(RecipeSectionType), sectionType));
+
+                conn.Open();
+
+                object result = cmd.ExecuteScalar();
+                if (result.GetType() != typeof(DBNull))
+                    return Convert.ToInt32(result) + 1;
+                else
+                    return 1;
+            }
+        }
+
+        int NextRecipeIngredientItemOrderId(int sectionId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+	                        MAX(OrderId) OrderId
+                        FROM Recipes.RecipeIngredient
+                        WHERE SectionId = @SectionId;";
+
+                cmd.Parameters.AddWithValue("@SectionId", sectionId);
+
+                conn.Open();
+
+                object result = cmd.ExecuteScalar();
+                if (result.GetType() != typeof(DBNull))
+                    return Convert.ToInt32(result) + 1;
+                else
+                    return 1;
+            }
+        }
+
+        int NextRecipeInstructionItemOrderId(int sectionId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+	                        MAX(OrderId) OrderId
+                        FROM Recipes.RecipeInstruction
+                        WHERE SectionId = @SectionId;";
+
+                cmd.Parameters.AddWithValue("@SectionId", sectionId);
+
+                conn.Open();
+
+                object result = cmd.ExecuteScalar();
+                if (result.GetType() != typeof(DBNull))
+                    return Convert.ToInt32(result) + 1;
+                else
+                    return 1;
+            }
         }
 
         #endregion
