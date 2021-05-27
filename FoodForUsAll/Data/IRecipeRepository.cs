@@ -22,6 +22,7 @@ namespace DbData
         Task<List<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
         Task AddRecipe(Recipe recipe);
         Task DeleteRecipe(int recipeId);
+        Task PermanentlyDeleteRecipe(int recipeId);
         #endregion region
 
         #region ingredient sections

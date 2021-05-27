@@ -126,6 +126,12 @@ namespace InMemoryData
             _recipes.Remove(recipeId);
         }
 
+        public async Task PermanentlyDeleteRecipe(int recipeId)
+        {
+            //???
+            _recipes.Remove(recipeId);
+        }
+
         #endregion
 
         #region ingredient sections

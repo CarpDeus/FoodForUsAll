@@ -80,6 +80,8 @@ namespace Integration.Tests
 
             //Assert
             Assert.That(carbonaraRecipe.Id != 0);
+
+            await recipeRepository.PermanentlyDeleteRecipe(carbonaraRecipe.Id);
         }
 
         TransactionScope _scope;

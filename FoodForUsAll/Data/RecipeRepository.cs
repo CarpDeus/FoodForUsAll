@@ -294,6 +294,33 @@ namespace DbData
             }
         }
 
+        public async Task PermanentlyDeleteRecipe(int recipeId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            foreach (int ingredientSectionId in await GetTopLevelIngredientSectionIdsByRecipeId(recipeId))
+                await DeleteIngredientSection(recipeId, ingredientSectionId);
+
+            foreach (int instructionSectionId in await GetTopLevelInstructionSectionIdsByRecipeId(recipeId))
+                await DeleteInstructionSection(recipeId, instructionSectionId);
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "DELETE FROM Recipes.Recipe WHERE Id = @Id;";
+
+                cmd.Parameters.AddWithValue("@Id", recipeId);
+
+                await conn.OpenAsync();
+
+                await cmd.ExecuteNonQueryAsync();
+
+                conn.Close();
+            }
+        }
+
         #endregion
 
         #region ingredient sections
@@ -393,6 +420,37 @@ namespace DbData
         public async Task ChangeIngredientSectionName(int recipeId, int ingredientSectionId, string newIngredientSectionName)
         {
             await ChangeSectionName(ingredientSectionId, newIngredientSectionName);
+        }
+
+        public async Task DeleteIngredientSection(int recipeId, int ingredientSectionId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<int> recipeIngredientIds = await GetRecipeIngredientIdsInSection(recipeId, ingredientSectionId);
+
+            foreach (int recipeIngredientId in recipeIngredientIds)
+                await DeleteRecipeIngredient(recipeId, ingredientSectionId, recipeIngredientId);
+
+            List<int> childIngredientSectionIds = await GetChildIngredientSectionIds(recipeId, ingredientSectionId);
+
+            foreach (int childIngredientSectionId in childIngredientSectionIds)
+                await Task.Run(() => DeleteIngredientSection(recipeId, childIngredientSectionId));
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "DELETE FROM Recipes.Section WHERE Id = @Id;";
+
+                cmd.Parameters.AddWithValue("@Id", ingredientSectionId);
+
+                await conn.OpenAsync();
+
+                await cmd.ExecuteNonQueryAsync();
+
+                conn.Close();
+            }
         }
 
         #endregion
@@ -679,6 +737,8 @@ namespace DbData
                         FROM Recipes.[Section]
                         WHERE Id = @Id;";
 
+                cmd.Parameters.AddWithValue("@Id", sectionId);
+
                 await conn.OpenAsync();
 
                 using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
@@ -758,6 +818,35 @@ namespace DbData
             await ChangeSectionName(ingredientSectionId, newInstructionSectionName);
         }
 
+        public async Task DeleteInstructionSection(int recipeId, int instructionSectionId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            InstructionSection instructionSection = await GetInstructionSection(recipeId, instructionSectionId);
+
+            foreach (InstructionSection childInstructionSection in instructionSection.Children)
+                await DeleteInstructionSection(recipeId, childInstructionSection.Id);
+
+            foreach (RecipeInstruction recipeInstruction in instructionSection.RecipeInstructions)
+                await Task.Run(() => DeleteRecipeInstruction(recipeId, instructionSectionId, recipeInstruction.Id));
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "DELETE FROM Recipes.Section WHERE Id = @Id;";
+
+                cmd.Parameters.AddWithValue("@Id", instructionSectionId);
+
+                await conn.OpenAsync();
+
+                await cmd.ExecuteNonQueryAsync();
+
+                conn.Close();
+            }
+        }
+
         #endregion
 
         #region recipe instructions
@@ -821,6 +910,27 @@ namespace DbData
                 await conn.OpenAsync();
 
                 await cmd.ExecuteNonQueryAsync();
+
+                conn.Close();
+            }
+        }
+
+        public async Task DeleteRecipeInstruction(int recipeId, int sectionId, int recipeInstructionId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "DELETE FROM Recipes.RecipeInstruction WHERE Id = @Id;";
+
+                cmd.Parameters.AddWithValue("@Id", recipeInstructionId);
+
+                await conn.OpenAsync();
+
+                int numberOfRowsDeleted = await cmd.ExecuteNonQueryAsync();
 
                 conn.Close();
             }
@@ -1005,6 +1115,42 @@ namespace DbData
             return recipeInstructions;
         }
 
+        async Task<List<int>> GetTopLevelIngredientSectionIdsByRecipeId(int recipeId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<int> ingredientSectionIds = new List<int>();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id
+                        FROM Recipes.[Section]
+                        WHERE RecipeId = @RecipeId
+                        AND ParentId IS NULL
+                        AND [Type] = 'Ingredient';";
+
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        ingredientSectionIds.Add(id);
+                    }
+                }
+            }
+
+            return ingredientSectionIds;
+        }
+
         async Task<List<IngredientSection>> GetIngredientSectionsByRecipeId(int recipeId)
         {
             if (_foodForUsAllConnectionString == null)
@@ -1053,6 +1199,80 @@ namespace DbData
             }
 
             return ingredientSections;
+        }
+
+        async Task<List<int>> GetRecipeIngredientIdsInSection(int recipeId, int sectionId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<int> childIngredientSectionIds = new List<int>();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id
+                        FROM Recipes.[RecipeIngredient]
+                        WHERE RecipeId = @RecipeId
+                        AND SectionId = @SectionId;";
+
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+                cmd.Parameters.AddWithValue("@SectionId", sectionId);
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        childIngredientSectionIds.Add(id);
+                    }
+                }
+            }
+
+            return childIngredientSectionIds;
+        }
+
+        async Task<List<int>> GetChildIngredientSectionIds(int recipeId, int parentSectionId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<int> childIngredientSectionIds = new List<int>();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id
+                        FROM Recipes.[Section]
+                        WHERE RecipeId = @RecipeId
+                        AND ParentId IS NOT NULL
+                        AND ParentId = @ParentId
+                        AND [Type] = 'Ingredient';";
+
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+                cmd.Parameters.AddWithValue("@ParentId", parentSectionId);
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        childIngredientSectionIds.Add(id);
+                    }
+                }
+            }
+
+            return childIngredientSectionIds;
         }
 
         async Task<List<IngredientSection>> GetIngredientSectionsByParentSection(int recipeId, int parentSectionId)
@@ -1105,6 +1325,42 @@ namespace DbData
             }
 
             return ingredientSections;
+        }
+
+        async Task<List<int>> GetTopLevelInstructionSectionIdsByRecipeId(int recipeId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<int> instructionSectionIds = new List<int>();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id
+                        FROM Recipes.[Section]
+                        WHERE RecipeId = @RecipeId
+                        AND ParentId IS NULL
+                        AND [Type] = 'Instruction';";
+
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        instructionSectionIds.Add(id);
+                    }
+                }
+            }
+
+            return instructionSectionIds;
         }
 
         async Task<List<InstructionSection>> GetInstructionSectionsByRecipeId(int recipeId)

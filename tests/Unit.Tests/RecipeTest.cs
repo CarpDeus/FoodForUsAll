@@ -16,9 +16,37 @@ namespace Unit.Tests
             _recipeUseCases = new RecipeUseCases(_recipeRepository);
         }
 
-        [SetUp]
-        public void Setup()
+        [Test]
+        public async Task RemoveRecipeIngredient()
         {
+            //Arrange
+            Recipe recipe = new Recipe
+            {
+                AuthorId = _firstAuthor,
+                Name = "Fish and Chipz",
+                Description = "Fish and potatoes deep fried to perfection.",
+            };
+            await _recipeUseCases.AddRecipe(recipe);
+
+            Ingredient ingredient1 = new Ingredient { Name = "Fish", Description = "Breaded Fish" };
+            await _recipeUseCases.AddIngredient(ingredient1);
+            Ingredient ingredient2 = new Ingredient { Name = "Long Cut Potatoes", Description = "" };
+            await _recipeUseCases.AddIngredient(ingredient2);
+
+            IngredientSection ingredientSection = new IngredientSection { Name = "Main", };
+            await _recipeUseCases.AddIngredientSection(recipe.Id, ingredientSection);
+
+            RecipeIngredient recipeIngredient1 = new RecipeIngredient { Ingredient = ingredient1, OrderId = 1, Quantity = "4" };
+            await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient1);
+            RecipeIngredient recipeIngredient2 = new RecipeIngredient { Ingredient = ingredient2, OrderId = 2, Quantity = "2 potatos" };
+            await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient2);
+
+            //Act
+            await _recipeRepository.DeleteRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient1.Id);
+
+            //Assert
+            Assert.That(await _recipeRepository.GetRecipeIngredient(recipe.Id, recipeIngredient1.Id) == null);
+            Assert.That(await _recipeRepository.GetRecipeIngredient(recipe.Id, recipeIngredient2.Id) != null);
         }
 
         [Test]
