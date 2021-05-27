@@ -1,0 +1,29 @@
+﻿@page "/MyRecipeList"
+@inherits UI.Pages.MyRecipeListModel
+@using Domain;
+
+<EditForm Model="Recipe">
+<div style="margin-bottom: 20px;">
+@if (!AddNewRecipeIsVisible)
+{
+    <InputText @bind-Value=@SearchString /><button @onclick="(async () => Search())">Search</button> <button @onclick="(async () => SetAddNewRecipeIsVisible())">Add New Recipe</button>
+}
+else
+{
+    <div>
+        New Recipe Name: <InputText @bind-Value=@NewRecipeName />
+        <button @onclick="(() => SetAddNewRecipeNotVisible())">Cancel</button>
+        <button @onclick="(() => AddNewRecipe())">Add</button>
+    </div>
+}
+</div>
+
+<h3>My Recipe List</h3>
+
+<div class="main">
+@foreach (Recipe recipe in Recipes)
+{
+    <span title="@recipe.ToString()" @onclick='() => ViewRecipe(recipe.Id)'>@recipe.Name</span> <span style="font-size: 12px;" title="Edit" class="oi oi-pencil" aria-hidden="true" @onclick='() => EditRecipe(recipe.Id)'/><br />
+}
+</div>
+</EditForm>

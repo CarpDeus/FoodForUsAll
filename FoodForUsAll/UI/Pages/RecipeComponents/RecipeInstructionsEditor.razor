@@ -1,0 +1,25 @@
+﻿@page "/RecipeInstructionsEditor/{InstructionSectionId}"
+@inherits UI.Pages.RecipeInstructionsEditorModel
+@using Domain;
+<div class="row" style="text-indent: 15px">
+    <div class="col-12"><b><u>Instruction</u></b></div>
+</div>
+@foreach(RecipeInstruction recipeInstruction in InstructionSection.RecipeInstructions.OrderBy(x => x.OrderId))
+{
+<div class="row" style="text-indent: 15px">
+    <div class="col-12">
+    @if (IsEditable) {
+        <InputTextArea style="width:100%;" @bind-Value="@recipeInstruction.Description" @onfocusout="(async () => await DescriptionUpdated(RecipeId, InstructionSection.Id, recipeInstruction.Id, recipeInstruction.Description))"  @attributes="InputTextAreaAttributes" />
+    }
+    else {
+        @recipeInstruction.Description
+    }
+    </div>
+</div>
+}
+@if (IsEditable && !AddNewInstructionDescriptionIsVisible) {
+    <div class="col-12"><span style="font-size: 12px;" class="oi oi-plus" aria-hidden="true" @onclick='(() => SetNewInstructionNameIsVisible())'> Add Instruction</span></div>
+}
+else if (IsEditable && AddNewInstructionDescriptionIsVisible) {
+    <div class="col-12">New Instruction: <InputTextArea style="width:100%;" @bind-Value=@NewInstructionDescription @attributes="InputTextAreaAttributes" /><button @onclick="(() => SetNewInstructionNameNotVisible())">Cancel</button><button @onclick="(() => AddRecipeInstruction(RecipeId, InstructionSection.Id, NewInstructionDescription))">Add</button></div>
+}

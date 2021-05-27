@@ -1,0 +1,25 @@
+﻿@page "/RecipeIngredientsEditor/{IngredientSectionId}"
+@inherits UI.Pages.RecipeIngredientsEditorModel
+@using Domain;
+<div class="row" style="text-indent: 15px">
+    @if (IsEditable) { <div class="col-3"><b><u>Quantity</u></b></div> } else { <div class="col-3 text-right"><b><u>Quantity</u></b></div> }
+    <div class="col-9"><b><u>Ingredient</u></b></div>
+</div>
+@foreach(RecipeIngredient recipeIngredient in IngredientSection.RecipeIngredients.OrderBy(x => x.OrderId))
+{
+<div class="row" style="text-indent: 15px">
+    @if (IsEditable) {
+        <div class="col-3">
+        <InputText style="width:100%;" @bind-Value="@recipeIngredient.Quantity" @onfocusout="(async () => await QuantityUpdated(RecipeId, IngredientSection.Id, recipeIngredient.Id, recipeIngredient.Quantity))" />
+        </div>
+    }
+    else {
+        <div class="col-3 text-right">
+        @recipeIngredient.Quantity
+        </div>
+    }
+    <div class="col-9">@recipeIngredient.Ingredient.Name</div>
+</div>
+}
+@if (IsEditable && !AddNewIngredientNameIsVisible) { <div class="col-12"><span style="font-size: 12px;" class="oi oi-plus" aria-hidden="true" @onclick='(() => SetNewIngredientNameIsVisible())'> Add Ingredient</span></div> }
+else if (IsEditable && AddNewIngredientNameIsVisible) { <div class="col-12">New Ingredient Name: <InputText @bind-Value=@NewIngredientName /><button @onclick="(() => SetNewIngredientNameNotVisible())">Cancel</button><button @onclick="(() => AddRecipeIngredient(RecipeId, IngredientSection.Id, NewIngredientName))">Add</button></div>}

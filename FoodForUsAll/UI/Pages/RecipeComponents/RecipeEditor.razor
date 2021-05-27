@@ -1,0 +1,37 @@
+﻿@page "/RecipeEditor/{RecipeId}"
+@inherits UI.Pages.RecipeEditorModel
+@using Domain;
+
+<div class="main">
+@if (Recipe == null)
+{
+    <div></div>
+}
+else
+{
+<EditForm Model="Recipe">
+<h3>
+    @if (IsEditable) { <InputText style="width:60%" @bind-Value="@Recipe.Name" @onfocusout="(async () => await RecipeNameUpdated(Recipe.Id, Recipe.Name))" /> }
+    else { <span>@Recipe.Name</span> }
+</h3>
+<h6>
+    @if (IsEditable) { <InputTextArea style="width:100%" @bind-Value="@Recipe.Description" @attributes="InputTextAreaAttributes" @onfocusout="(async () => await RecipeDescriptionUpdated(Recipe.Id, Recipe.Description))" /> }
+    else { <span>@Recipe.Description</span> }
+</h6>
+<hr />
+<h4>Ingredients</h4>
+    <CascadingValue Name="RecipeId" Value="@Recipe.Id">
+        <CascadingValue Name="IsEditable" Value="@IsEditable">
+            <IngredientSectionsEditor />
+        </CascadingValue>
+    </CascadingValue>
+<hr />
+<h4>Instructions</h4>
+    <CascadingValue Name="RecipeId" Value="@Recipe.Id">
+        <CascadingValue Name="IsEditable" Value="@IsEditable">
+            <InstructionSectionsEditor />
+        </CascadingValue>
+    </CascadingValue>
+</EditForm>
+}
+</div>

@@ -1,0 +1,55 @@
+﻿@page "/IngredientSectionsEditor/{IngredientSectionId}"
+@inherits UI.Pages.IngredientSectionsEditorModel
+@using Domain;
+@if (IsEditable)
+{<span style="font-size: 12px;" class="pl-1 oi oi-plus" aria-hidden="true" @onclick='(async () => await AddNewIngredientSection(Recipe.Id, null))'> Add Section</span>}
+@foreach (IngredientSection ingredientSection in @Recipe.IngredientSections.OrderBy(x => x.OrderId))
+{
+    <div class="container">
+        @if (IsEditable)
+        {<h5>
+            <u><InputText style="width:50%" @bind-Value="@ingredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, ingredientSection.Id, ingredientSection.Name))" /></u>
+            @if (ingredientSection.OrderId > 1) { <span style="font-size: 12px;" class="oi oi-caret-top" aria-hidden="true" />} <span style="font-size: 12px;" class="oi oi-caret-bottom" aria-hidden="true" />
+         </h5> }
+        else
+        { <h5><u>@ingredientSection.Name</u></h5>}
+        @if (IsEditable)
+        {<span style="font-size: 12px;" class="oi oi-plus" aria-hidden="true" @onclick='(async () => await AddNewIngredientSection(Recipe.Id, ingredientSection.Id))'> Add "@ingredientSection.Name" Subsection</span>}
+        <CascadingValue Name="IngredientSectionId" Value="@ingredientSection.Id">
+            <CascadingValue Name="IsEditable" Value="@IsEditable">
+                <RecipeIngredientsEditor />
+            </CascadingValue>
+        </CascadingValue>
+        <br />
+        @foreach (IngredientSection childIngredientSection in ingredientSection.Children.OrderBy(x => x.OrderId))
+        {
+            <div class="pl-xl-4 container">
+                @if (IsEditable)
+                {<h5>@ingredientSection.Name-<u><InputText style="width:50%" @bind-Value="@childIngredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, childIngredientSection.Id, childIngredientSection.Name))" /></u></h5>}
+            else
+            { <h5>@ingredientSection.Name-<u>@childIngredientSection.Name</u></h5>}
+                <CascadingValue Name="IngredientSectionId" Value="@childIngredientSection.Id">
+                    <CascadingValue Name="IsEditable" Value="@IsEditable">
+                        <RecipeIngredientsEditor />
+                    </CascadingValue>
+                </CascadingValue>
+                <br />
+                @foreach (IngredientSection grandChildIngredientSection in childIngredientSection.Children.OrderBy(x => x.OrderId))
+                {
+                    <div class="pl-xl-5 container">
+                        @if (IsEditable)
+                        {<h5><u><InputText style="width:50%" @bind-Value="@grandChildIngredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, grandChildIngredientSection.Id, grandChildIngredientSection.Name))" /></u></h5> }
+                        else
+                        { <h5><u>@grandChildIngredientSection.Name</u></h5>}
+                        <CascadingValue Name="IngredientSectionId" Value="@grandChildIngredientSection.Id">
+                            <CascadingValue Name="IsEditable" Value="@IsEditable">
+                                <RecipeIngredientsEditor />
+                            </CascadingValue>
+                        </CascadingValue>
+                        <br />
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
