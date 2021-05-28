@@ -26,9 +26,8 @@ namespace UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Recipes = await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
-
             await base.OnInitializedAsync();
+            Recipes = await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
         }
 
         public async Task AddNewRecipe()
@@ -45,6 +44,7 @@ namespace UI.Pages
 
                 SetAddNewRecipeNotVisible();
                 SearchString = string.Empty;
+                NewRecipeName = string.Empty;
 
                 Recipes = await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
 
