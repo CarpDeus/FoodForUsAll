@@ -40,6 +40,7 @@ namespace UI.Pages
         public void Dispose()
         {
             RecipesState.OnRecipeChange -= StateHasChanged;
+            GC.SuppressFinalize(this);
         }
 
         #region private

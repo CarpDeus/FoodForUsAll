@@ -1262,13 +1262,11 @@ namespace DbData
 
                 await conn.OpenAsync();
 
-                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                using var rdr = await cmd.ExecuteReaderAsync();
+                while (await rdr.ReadAsync())
                 {
-                    while (await rdr.ReadAsync())
-                    {
-                        int id = Convert.ToInt32(rdr["Id"]);
-                        childIngredientSectionIds.Add(id);
-                    }
+                    int id = Convert.ToInt32(rdr["Id"]);
+                    childIngredientSectionIds.Add(id);
                 }
             }
 

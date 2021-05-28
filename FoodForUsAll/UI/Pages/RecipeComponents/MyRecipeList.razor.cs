@@ -43,7 +43,7 @@ namespace UI.Pages
                 IngredientSection ingredientSection = new() { OrderId = 1, Name = "Main", };
                 await RecipeUseCases.AddIngredientSection(recipe.Id, ingredientSection);
                 
-                InstructionSection instructionSection = new InstructionSection { OrderId = 1, Name = "Main", };
+                InstructionSection instructionSection = new() { OrderId = 1, Name = "Main", };
                 await RecipeUseCases.AddInstructionSection(recipe.Id, instructionSection);
 
                 SetAddNewRecipeNotVisible();

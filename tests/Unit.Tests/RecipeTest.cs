@@ -20,7 +20,7 @@ namespace Unit.Tests
         public async Task RemoveRecipeIngredient()
         {
             //Arrange
-            Recipe recipe = new Recipe
+            Recipe recipe = new()
             {
                 AuthorId = _firstAuthor,
                 Name = "Fish and Chipz",
@@ -53,14 +53,15 @@ namespace Unit.Tests
         public async Task SearchRecipeReturnsProperResults()
         {
             //Arrange
-            Recipe recipe1 = new() {
+            Recipe recipe1 = new()
+            {
                 AuthorId = _firstAuthor,
                 Name = "Beef and Bacon",
                 Description = "A rich beef, mushroom, onion, and bacon dish served over noodles.",
             };
             await _recipeUseCases.AddRecipe(recipe1);
 
-            Recipe recipe2 = new Recipe
+            Recipe recipe2 = new()
             {
                 AuthorId = _firstAuthor,
                 Name = "Chicken Mushroom Curry",
@@ -68,7 +69,7 @@ namespace Unit.Tests
             };
             await _recipeUseCases.AddRecipe(recipe2);
 
-            Recipe recipe3 = new Recipe
+            Recipe recipe3 = new()
             {
                 AuthorId = _firstAuthor,
                 Name = "Chicken Jalfrezi",
@@ -284,7 +285,7 @@ namespace Unit.Tests
         public async Task CanAddBasicRecipe()
         {
             //Arrange
-            Recipe basicRecipe = new Recipe
+            Recipe basicRecipe = new()
             {
                 AuthorId = _defaultAuthor,
                 Name = "Food",
@@ -336,7 +337,7 @@ namespace Unit.Tests
         public void EmptyRecipeOutputsProperly()
         {
             //Arrange
-            Recipe _emptyRecipe = new Recipe();
+            Recipe _emptyRecipe = new();
 
             //Assert
             Assert.That(_emptyRecipe.ToString() == "Name Missing");
@@ -357,8 +358,8 @@ namespace Unit.Tests
         readonly InMemoryData.RecipeRepository _recipeRepository;
         readonly RecipeUseCases _recipeUseCases;
 
-        static Guid _defaultAuthor = new Guid("00000000-0000-0000-0000-000000000000");
-        static Guid _firstAuthor = new Guid("11111111-1111-1111-1111-111111111111");
+        static Guid _defaultAuthor = new("00000000-0000-0000-0000-000000000000");
+        static Guid _firstAuthor = new("11111111-1111-1111-1111-111111111111");
 
         #endregion
     }
