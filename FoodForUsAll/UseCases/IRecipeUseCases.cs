@@ -21,8 +21,8 @@ namespace UseCases
         Task AddRecipe(Recipe recipe);
         Task DeleteRecipe(int recipeId);
         Task<Recipe> GetRecipe(int recipeId);
-        Task<List<Recipe>> GetRecipesByAuthor(Guid authorId);
-        Task<List<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
+        Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId);
+        Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
         #endregion
 
         #region ingredient sections

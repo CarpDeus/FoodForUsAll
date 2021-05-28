@@ -78,10 +78,10 @@ namespace Unit.Tests
             await _recipeUseCases.AddRecipe(recipe3);
 
             //Act
-            List<Recipe> beefRecipes = await _recipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(_firstAuthor, "BeeF");
-            List<Recipe> mushroomRecipes = await _recipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(_firstAuthor, "MUSHROOM");
-            List<Recipe> indianRecipes = await _recipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(_firstAuthor, "indian");
-            List<Recipe> noMatchRecipes = await _recipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(_firstAuthor, "AsDf");
+            IReadOnlyList<Recipe> beefRecipes = await _recipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(_firstAuthor, "BeeF");
+            IReadOnlyList<Recipe> mushroomRecipes = await _recipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(_firstAuthor, "MUSHROOM");
+            IReadOnlyList<Recipe> indianRecipes = await _recipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(_firstAuthor, "indian");
+            IReadOnlyList<Recipe> noMatchRecipes = await _recipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(_firstAuthor, "AsDf");
 
             //Assert
             Assert.That(beefRecipes.Count == 1);

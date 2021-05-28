@@ -73,12 +73,12 @@ namespace InMemoryData
             return null;
         }
 
-        public async Task<List<Recipe>> GetRecipesByAuthor(Guid authorId)
+        public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId)
         {
             return _recipes.Where(x => x.Value.AuthorId == authorId).Select(y => y.Value).ToList();
         }
 
-        public async Task<List<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
+        public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
         {
             List<Recipe> recipes = _recipes.Where(x => x.Value.AuthorId == authorId).Select(y => y.Value).ToList();
             return recipes.Where(

@@ -54,12 +54,12 @@ namespace UseCases
             return await _recipeRepository.GetRecipe(recipeId);
         }
 
-        public async Task<List<Recipe>> GetRecipesByAuthor(Guid recipeId)
+        public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid recipeId)
         {
             return await _recipeRepository.GetRecipesByAuthor(recipeId);
         }
 
-        public async Task<List<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
+        public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
         {
             return await _recipeRepository.GetRecipesByAuthorAndSearchByNameOrDescription(authorId, searchString);
         }

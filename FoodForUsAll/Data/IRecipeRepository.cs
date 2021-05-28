@@ -18,8 +18,8 @@ namespace DbData
         Task UpdateRecipeName(int recipeId, string recipeName);
         Task UpdateRecipeDescription(int recipeId, string recipeDescription);
         Task<Recipe> GetRecipe(int recipeId);
-        Task<List<Recipe>> GetRecipesByAuthor(Guid authorId);
-        Task<List<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
+        Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId);
+        Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
         Task AddRecipe(Recipe recipe);
         Task DeleteRecipe(int recipeId);
         Task PermanentlyDeleteRecipe(int recipeId);

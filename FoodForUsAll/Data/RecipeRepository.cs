@@ -220,12 +220,12 @@ namespace DbData
                 return null;
         }
 
-        public async Task<List<Recipe>> GetRecipesByAuthor(Guid authorId)
+        public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId)
         {
             return await GetRecipes("AND Recipe.AuthorId = '" + authorId.ToString() + "'");
         }
 
-        public async Task<List<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
+        public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
         {
             List<Recipe> recipes = await GetRecipes("AND Recipe.AuthorId = '" + authorId.ToString() + "'");
             return recipes.Where(x => x.Name.Contains(searchString) || x.Description.Contains(searchString)).ToList();
