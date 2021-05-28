@@ -53,8 +53,7 @@ namespace InMemoryData
 
             IngredientSection ingredientSection1 = new() { OrderId = 1, Name = "Main", RecipeIngredients = recipeIngredients1, };
 
-            List<IngredientSection> ingredientSections1 = new List<IngredientSection>();
-            ingredientSections1.Add(ingredientSection1);
+            List<IngredientSection> ingredientSections1 = new List<IngredientSection> { ingredientSection1 };
 
             List<RecipeInstruction> recipeInstructions1 = new List<RecipeInstruction>();
             recipeInstructions1.Add(new RecipeInstruction { OrderId = 1, Description = "In a large saucepan cook bacon until crisp and set aside." });
@@ -66,8 +65,7 @@ namespace InMemoryData
 
             InstructionSection instructionSection1 = new InstructionSection { OrderId = 1, Name = "Main", RecipeInstructions = recipeInstructions1, };
 
-            List<InstructionSection> instructionSections1 = new List<InstructionSection>();
-            instructionSections1.Add(instructionSection1);
+            List<InstructionSection> instructionSections1 = new List<InstructionSection> { instructionSection1 };
 
             recipes.Add(new Recipe
             {

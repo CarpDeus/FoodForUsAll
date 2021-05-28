@@ -411,8 +411,7 @@ namespace InMemoryData
 
         IEnumerable<IngredientSection> GetIngredientSectionsBySection(IngredientSection ingredientSection)
         {
-            List<IngredientSection> ingredientSections = new List<IngredientSection>();
-            ingredientSections.Add(ingredientSection);
+            List<IngredientSection> ingredientSections = new List<IngredientSection> { ingredientSection };
 
             foreach (IngredientSection ingredientSectionChild in ingredientSection.Children)
                 ingredientSections.AddRange(GetIngredientSectionsBySection(ingredientSectionChild));
@@ -422,8 +421,7 @@ namespace InMemoryData
 
         IEnumerable<InstructionSection> GetInstructionSectionsBySection(InstructionSection instructionSection)
         {
-            List<InstructionSection> instructionSections = new List<InstructionSection>();
-            instructionSections.Add(instructionSection);
+            List<InstructionSection> instructionSections = new List<InstructionSection> { instructionSection };
 
             foreach (InstructionSection ingredientSectionChild in instructionSection.Children)
                 instructionSections.AddRange(GetInstructionSectionsBySection(ingredientSectionChild));

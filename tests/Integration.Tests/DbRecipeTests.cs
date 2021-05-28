@@ -83,6 +83,17 @@ namespace Integration.Tests
             await recipeRepository.PermanentlyDeleteRecipe(carbonaraRecipe.Id);
         }
 
+        [OneTimeTearDown]
+        public async Task TearDown()
+        {
+            await recipeRepository.DeleteIngredient(baconIngredient.Id);
+            await recipeRepository.DeleteIngredient(parmesanIngredient.Id);
+            await recipeRepository.DeleteIngredient(largeEggIngredient.Id);
+            await recipeRepository.DeleteIngredient(groundBlackPepperIngredient.Id);
+            await recipeRepository.DeleteIngredient(waterIngredient.Id);
+            await recipeRepository.DeleteIngredient(spaghettiIngredient.Id);
+        }
+
         #region private
 
         readonly RecipeRepository recipeRepository;
