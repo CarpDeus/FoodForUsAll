@@ -26,7 +26,7 @@ namespace Integration.Tests
         public async Task Setup()
         {
             _scope = new TransactionScope();
-            roundSteakIngredient = new Ingredient { Name = "Round Steak", Description = "Fine Round Steak" };
+            roundSteakIngredient = new() { Name = "Round Steak", Description = "Fine Round Steak" };
         }
 
         [TearDown]

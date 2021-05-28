@@ -974,7 +974,7 @@ namespace DbData
                         string name = rdr["Name"].ToString();
                         string description = rdr["Description"].ToString();
                         Guid authorId = new Guid((string)rdr["AuthorId"]);
-                        Recipe recipe =
+                        recipes.Add(
                             new Recipe
                             {
                                 Id = id,
@@ -983,7 +983,7 @@ namespace DbData
                                 AuthorId = authorId,
                                 IngredientSections = await GetIngredientSectionsByRecipeId(id),
                                 InstructionSections = await GetInstructionSectionsByRecipeId(id),
-                            };
+                            });
                     }
                 }
             }

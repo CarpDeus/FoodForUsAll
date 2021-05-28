@@ -53,9 +53,9 @@ namespace UI.Pages
 
         public async Task AddRecipeIngredient(int recipeId, int sectionId, string newIngredientName)
         {
-            Ingredient ingredient = new Ingredient { Name = newIngredientName, Description = string.Empty };
+            Ingredient ingredient = new() { Name = newIngredientName, Description = string.Empty };
             await RecipeUseCases.AddIngredient(ingredient);
-            RecipeIngredient recipeIngredient = new RecipeIngredient { Quantity = string.Empty, Ingredient = ingredient, };
+            RecipeIngredient recipeIngredient = new() { Quantity = string.Empty, Ingredient = ingredient, };
             await RecipeUseCases.AddRecipeIngredient(recipeId, sectionId, recipeIngredient);
             SetNewIngredientNameNotVisible();
         }

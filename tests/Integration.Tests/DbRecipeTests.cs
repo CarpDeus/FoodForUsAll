@@ -26,18 +26,17 @@ namespace Integration.Tests
         [OneTimeSetUp]
         public async Task Setup()
         {
-            _scope = new TransactionScope();
-            baconIngredient = new Ingredient { Name = "Bacon", Description = "Sliced bacon" };
+            baconIngredient = new() { Name = "Bacon", Description = "Sliced bacon" };
             await recipeRepository.AddIngredient(baconIngredient);
-            parmesanIngredient = new Ingredient { Name = "Parmesan" };
+            parmesanIngredient = new() { Name = "Parmesan" };
             await recipeRepository.AddIngredient(parmesanIngredient);
-            largeEggIngredient = new Ingredient { Name = "Large Egg", Description = "Large Chicken Egg" };
+            largeEggIngredient = new() { Name = "Large Egg", Description = "Large Chicken Egg" };
             await recipeRepository.AddIngredient(largeEggIngredient);
-            groundBlackPepperIngredient = new Ingredient { Name = "Ground Black Pepper" };
+            groundBlackPepperIngredient = new() { Name = "Ground Black Pepper" };
             await recipeRepository.AddIngredient(groundBlackPepperIngredient);
-            waterIngredient = new Ingredient { Name = "Water", Description = "" };
+            waterIngredient = new() { Name = "Water", Description = "" };
             await recipeRepository.AddIngredient(waterIngredient);
-            spaghettiIngredient = new Ingredient { Name = "Spaghetti", Description = "Medium Dried Spaghetti" };
+            spaghettiIngredient = new() { Name = "Spaghetti", Description = "Medium Dried Spaghetti" };
             await recipeRepository.AddIngredient(spaghettiIngredient);
         }
 
@@ -46,17 +45,17 @@ namespace Integration.Tests
         {
             //Arrage
             List<RecipeIngredient> recipeIngredients1 = new List<RecipeIngredient>();
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = baconIngredient, Quantity = "1lb" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = parmesanIngredient, Quantity = "1/4 cup grated" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = largeEggIngredient, Quantity = "4 yolks" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = groundBlackPepperIngredient, Quantity = "1 tsp." });
+            recipeIngredients1.Add(new() { Ingredient = baconIngredient, Quantity = "1lb" });
+            recipeIngredients1.Add(new() { Ingredient = parmesanIngredient, Quantity = "1/4 cup grated" });
+            recipeIngredients1.Add(new() { Ingredient = largeEggIngredient, Quantity = "4 yolks" });
+            recipeIngredients1.Add(new() { Ingredient = groundBlackPepperIngredient, Quantity = "1 tsp." });
 
             List<RecipeIngredient> recipeIngredients2 = new List<RecipeIngredient>();
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = waterIngredient, Quantity = "8 cups" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = spaghettiIngredient, Quantity = "8oz" });
+            recipeIngredients2.Add(new() { Ingredient = waterIngredient, Quantity = "8 cups" });
+            recipeIngredients2.Add(new() { Ingredient = spaghettiIngredient, Quantity = "8oz" });
 
-            IngredientSection ingredientSection1 = new IngredientSection { Name = "Main", RecipeIngredients = recipeIngredients1, };
-            IngredientSection ingredientSection2 = new IngredientSection { Name = "Pasta", RecipeIngredients = recipeIngredients2, };
+            IngredientSection ingredientSection1 = new() { Name = "Main", RecipeIngredients = recipeIngredients1, };
+            IngredientSection ingredientSection2 = new() { Name = "Pasta", RecipeIngredients = recipeIngredients2, };
 
             List<RecipeInstruction> recipeInstructions1 = new List<RecipeInstruction>();
             recipeInstructions1.Add(new RecipeInstruction { Description = "In a large saucepan cook bacon until crisp and set aside." });
@@ -83,8 +82,6 @@ namespace Integration.Tests
 
             await recipeRepository.PermanentlyDeleteRecipe(carbonaraRecipe.Id);
         }
-
-        TransactionScope _scope;
 
         #region private
 

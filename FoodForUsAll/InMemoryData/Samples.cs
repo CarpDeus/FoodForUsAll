@@ -17,16 +17,16 @@ namespace InMemoryData
             List<Ingredient> ingredients = new List<Ingredient>();
             List<Recipe> recipes = new List<Recipe>();
 
-            Ingredient roundSteakIngredient = new Ingredient { Name = "Round Steak", Description = "" };
-            Ingredient ingredient2 = new Ingredient { Name = "Bacon", Description = "Sliced bacon" };
-            Ingredient ingredient3 = new Ingredient { Name = "Golden Mushroom Soup", Description = "Condensed golden mushroom soup" };
-            Ingredient ingredient4 = new Ingredient { Name = "Parsley", Description = "Chopped parsley" };
-            Ingredient diamondCrystalKosherSaltIngredient = new Ingredient { Name = "Diamond Crystal Kosher Salt", Description = "" };
-            Ingredient groundBlackPepperIngredient = new Ingredient { Name = "Ground Black Pepper", Description = "" };
-            Ingredient ingredient7 = new Ingredient { Name = "Frozen Pearl Onions", Description = "" };
-            Ingredient slicedButtonMushroomsIngredient = new Ingredient { Name = "Sliced Button Mushrooms", Description = "" };
-            Ingredient ingredient9 = new Ingredient { Name = "Water", Description = "" };
-            Ingredient ingredient10 = new Ingredient { Name = "Egg Noodles", Description = "" };
+            Ingredient roundSteakIngredient = new() { Name = "Round Steak", Description = "" };
+            Ingredient ingredient2 = new() { Name = "Bacon", Description = "Sliced bacon" };
+            Ingredient ingredient3 = new() { Name = "Golden Mushroom Soup", Description = "Condensed golden mushroom soup" };
+            Ingredient ingredient4 = new() { Name = "Parsley", Description = "Chopped parsley" };
+            Ingredient diamondCrystalKosherSaltIngredient = new() { Name = "Diamond Crystal Kosher Salt", Description = "" };
+            Ingredient groundBlackPepperIngredient = new() { Name = "Ground Black Pepper", Description = "" };
+            Ingredient ingredient7 = new() { Name = "Frozen Pearl Onions", Description = "" };
+            Ingredient slicedButtonMushroomsIngredient = new() { Name = "Sliced Button Mushrooms", Description = "" };
+            Ingredient ingredient9 = new() { Name = "Water", Description = "" };
+            Ingredient ingredient10 = new() { Name = "Egg Noodles", Description = "" };
 
             ingredients.Add(roundSteakIngredient);
             ingredients.Add(ingredient2);
@@ -40,18 +40,18 @@ namespace InMemoryData
             ingredients.Add(ingredient10);
 
             List<RecipeIngredient> recipeIngredients1 = new List<RecipeIngredient>();
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = roundSteakIngredient, OrderId = 1, Quantity = "2lbs" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = ingredient2, OrderId = 2, Quantity = "4 slices" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = ingredient3, OrderId = 3, Quantity = "1 can" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = ingredient4, OrderId = 4, Quantity = "2tbsp" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 5, Quantity = "1 tbsp (2 tsp table salt)" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = groundBlackPepperIngredient, OrderId = 6, Quantity = "1/8 tsp" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = ingredient7, OrderId = 7, Quantity = "12 oz. (340g)" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = slicedButtonMushroomsIngredient, OrderId = 8, Quantity = "8 oz" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = ingredient9, OrderId = 9, Quantity = "1/4 cups" });
-            recipeIngredients1.Add(new RecipeIngredient { Ingredient = ingredient10, OrderId = 10, Quantity = "1 bag" });
+            recipeIngredients1.Add(new() { Ingredient = roundSteakIngredient, OrderId = 1, Quantity = "2lbs" });
+            recipeIngredients1.Add(new() { Ingredient = ingredient2, OrderId = 2, Quantity = "4 slices" });
+            recipeIngredients1.Add(new() { Ingredient = ingredient3, OrderId = 3, Quantity = "1 can" });
+            recipeIngredients1.Add(new() { Ingredient = ingredient4, OrderId = 4, Quantity = "2tbsp" });
+            recipeIngredients1.Add(new() { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 5, Quantity = "1 tbsp (2 tsp table salt)" });
+            recipeIngredients1.Add(new() { Ingredient = groundBlackPepperIngredient, OrderId = 6, Quantity = "1/8 tsp" });
+            recipeIngredients1.Add(new() { Ingredient = ingredient7, OrderId = 7, Quantity = "12 oz. (340g)" });
+            recipeIngredients1.Add(new() { Ingredient = slicedButtonMushroomsIngredient, OrderId = 8, Quantity = "8 oz" });
+            recipeIngredients1.Add(new() { Ingredient = ingredient9, OrderId = 9, Quantity = "1/4 cups" });
+            recipeIngredients1.Add(new() { Ingredient = ingredient10, OrderId = 10, Quantity = "1 bag" });
 
-            IngredientSection ingredientSection1 = new IngredientSection { OrderId = 1, Name = "Main", RecipeIngredients = recipeIngredients1, };
+            IngredientSection ingredientSection1 = new() { OrderId = 1, Name = "Main", RecipeIngredients = recipeIngredients1, };
 
             List<IngredientSection> ingredientSections1 = new List<IngredientSection>();
             ingredientSections1.Add(ingredientSection1);
@@ -78,20 +78,20 @@ namespace InMemoryData
                 InstructionSections = instructionSections1,
             });
 
-            Ingredient longGrainRiceIngredient = new Ingredient { Name = "Long Grain Rice", Description = "" };
-            Ingredient cuminSeedsIngredient = new Ingredient { Name = "Cumin Seeds", Description = "" };
-            Ingredient lowSodiumChickenBrothIngredient = new Ingredient { Name = "Low Sodium Chicken Broth", Description = "" };
-            Ingredient groundTurmericIngredient = new Ingredient { Name = "Ground Turmeric", Description = "" };
-            Ingredient indianCurryBaseIngredient = new Ingredient { Name = "Indian Curry Base", Description = "" };
-            Ingredient chickenBreastsIngredient = new Ingredient { Name = "Chicken Breasts", Description = "" };
-            Ingredient oliveOilIngredient = new Ingredient { Name = "Extra Virgin Olive Oil", Description = "" };
-            Ingredient groundCorianderIngredient = new Ingredient { Name = "Ground Coriander", Description = "" };
-            Ingredient doubleConcentratedTomatoPasteIngredient = new Ingredient { Name = "Double-Concentrated Tomato Paste", Description = "" };
-            Ingredient serranoChiliesIngredient = new Ingredient { Name = "Serrano Chilies", Description = "" };
-            Ingredient heavyCreamIngredient = new Ingredient { Name = "Heavy Cream", Description = "" };
-            Ingredient paprikaIngredient = new Ingredient { Name = "Paprika", Description = "" };
-            Ingredient whiteGranulatedSugarIngredient = new Ingredient { Name = "White Granulated Sugar", Description = "" };
-            Ingredient choppedCilantroIngredient = new Ingredient { Name = "Chopped Cilantro", Description = "" };
+            Ingredient longGrainRiceIngredient = new() { Name = "Long Grain Rice", Description = "" };
+            Ingredient cuminSeedsIngredient = new() { Name = "Cumin Seeds", Description = "" };
+            Ingredient lowSodiumChickenBrothIngredient = new() { Name = "Low Sodium Chicken Broth", Description = "" };
+            Ingredient groundTurmericIngredient = new() { Name = "Ground Turmeric", Description = "" };
+            Ingredient indianCurryBaseIngredient = new() { Name = "Indian Curry Base", Description = "" };
+            Ingredient chickenBreastsIngredient = new() { Name = "Chicken Breasts", Description = "" };
+            Ingredient oliveOilIngredient = new() { Name = "Extra Virgin Olive Oil", Description = "" };
+            Ingredient groundCorianderIngredient = new() { Name = "Ground Coriander", Description = "" };
+            Ingredient doubleConcentratedTomatoPasteIngredient = new() { Name = "Double-Concentrated Tomato Paste", Description = "" };
+            Ingredient serranoChiliesIngredient = new() { Name = "Serrano Chilies", Description = "" };
+            Ingredient heavyCreamIngredient = new() { Name = "Heavy Cream", Description = "" };
+            Ingredient paprikaIngredient = new() { Name = "Paprika", Description = "" };
+            Ingredient whiteGranulatedSugarIngredient = new() { Name = "White Granulated Sugar", Description = "" };
+            Ingredient choppedCilantroIngredient = new() { Name = "Chopped Cilantro", Description = "" };
 
             ingredients.Add(longGrainRiceIngredient);
             ingredients.Add(cuminSeedsIngredient);
@@ -109,30 +109,30 @@ namespace InMemoryData
             ingredients.Add(choppedCilantroIngredient);
 
             List<RecipeIngredient> recipeIngredients2 = new List<RecipeIngredient>();
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = slicedButtonMushroomsIngredient, OrderId = 1, Quantity = "8 oz (225 g)" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = lowSodiumChickenBrothIngredient, OrderId = 2, Quantity = "14.5oz can" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = groundTurmericIngredient, OrderId = 3, Quantity = "1 tsp" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = indianCurryBaseIngredient, OrderId = 4, Quantity = "1 portion (~600g)" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = chickenBreastsIngredient, OrderId = 5, Quantity = "3 (~700g)" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = oliveOilIngredient, OrderId = 6, Quantity = "2 tbsp." });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = groundCorianderIngredient, OrderId = 7, Quantity = "1 tsp." });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = groundBlackPepperIngredient, OrderId = 8, Quantity = "" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = doubleConcentratedTomatoPasteIngredient, OrderId = 9, Quantity = "2 Tbsp." });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = serranoChiliesIngredient, OrderId = 10, Quantity = "2 sliced" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = heavyCreamIngredient, OrderId = 11, Quantity = "1/2 cup" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = paprikaIngredient, OrderId = 12, Quantity = "1 tsp." });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = whiteGranulatedSugarIngredient, OrderId = 13, Quantity = "2 tsp." });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 14, Quantity = "" });
-            recipeIngredients2.Add(new RecipeIngredient { Ingredient = choppedCilantroIngredient, OrderId = 15, Quantity = "1 tbsp." });
+            recipeIngredients2.Add(new() { Ingredient = slicedButtonMushroomsIngredient, OrderId = 1, Quantity = "8 oz (225 g)" });
+            recipeIngredients2.Add(new() { Ingredient = lowSodiumChickenBrothIngredient, OrderId = 2, Quantity = "14.5oz can" });
+            recipeIngredients2.Add(new() { Ingredient = groundTurmericIngredient, OrderId = 3, Quantity = "1 tsp" });
+            recipeIngredients2.Add(new() { Ingredient = indianCurryBaseIngredient, OrderId = 4, Quantity = "1 portion (~600g)" });
+            recipeIngredients2.Add(new() { Ingredient = chickenBreastsIngredient, OrderId = 5, Quantity = "3 (~700g)" });
+            recipeIngredients2.Add(new() { Ingredient = oliveOilIngredient, OrderId = 6, Quantity = "2 tbsp." });
+            recipeIngredients2.Add(new() { Ingredient = groundCorianderIngredient, OrderId = 7, Quantity = "1 tsp." });
+            recipeIngredients2.Add(new() { Ingredient = groundBlackPepperIngredient, OrderId = 8, Quantity = "" });
+            recipeIngredients2.Add(new() { Ingredient = doubleConcentratedTomatoPasteIngredient, OrderId = 9, Quantity = "2 Tbsp." });
+            recipeIngredients2.Add(new() { Ingredient = serranoChiliesIngredient, OrderId = 10, Quantity = "2 sliced" });
+            recipeIngredients2.Add(new() { Ingredient = heavyCreamIngredient, OrderId = 11, Quantity = "1/2 cup" });
+            recipeIngredients2.Add(new() { Ingredient = paprikaIngredient, OrderId = 12, Quantity = "1 tsp." });
+            recipeIngredients2.Add(new() { Ingredient = whiteGranulatedSugarIngredient, OrderId = 13, Quantity = "2 tsp." });
+            recipeIngredients2.Add(new() { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 14, Quantity = "" });
+            recipeIngredients2.Add(new() { Ingredient = choppedCilantroIngredient, OrderId = 15, Quantity = "1 tbsp." });
 
             List<RecipeIngredient> recipeIngredients3 = new List<RecipeIngredient>();
-            recipeIngredients3.Add(new RecipeIngredient { Ingredient = longGrainRiceIngredient, OrderId = 1, Quantity = "2 cups" });
-            recipeIngredients3.Add(new RecipeIngredient { Ingredient = oliveOilIngredient, OrderId = 2, Quantity = "1 tbsp." });
-            recipeIngredients3.Add(new RecipeIngredient { Ingredient = cuminSeedsIngredient, OrderId = 3, Quantity = "1/2 tsp." });
-            recipeIngredients3.Add(new RecipeIngredient { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 4, Quantity = "pinch" });
+            recipeIngredients3.Add(new() { Ingredient = longGrainRiceIngredient, OrderId = 1, Quantity = "2 cups" });
+            recipeIngredients3.Add(new() { Ingredient = oliveOilIngredient, OrderId = 2, Quantity = "1 tbsp." });
+            recipeIngredients3.Add(new() { Ingredient = cuminSeedsIngredient, OrderId = 3, Quantity = "1/2 tsp." });
+            recipeIngredients3.Add(new() { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 4, Quantity = "pinch" });
 
-            IngredientSection ingredientSection2 = new IngredientSection { OrderId = 1, Name = "Main", RecipeIngredients = recipeIngredients2, };
-            IngredientSection ingredientSection3 = new IngredientSection { OrderId = 2, Name = "Rice", RecipeIngredients = recipeIngredients3, };
+            IngredientSection ingredientSection2 = new() { OrderId = 1, Name = "Main", RecipeIngredients = recipeIngredients2, };
+            IngredientSection ingredientSection3 = new() { OrderId = 2, Name = "Rice", RecipeIngredients = recipeIngredients3, };
 
             List<IngredientSection> ingredientSections2 = new List<IngredientSection>();
             ingredientSections2.Add(ingredientSection2);
@@ -171,10 +171,10 @@ namespace InMemoryData
 
 
 
-            Ingredient dicedTomatoesIngredient = new Ingredient { Name = "Diced Tomatoes", Description = "" };
-            Ingredient chiliPowderIngredient = new Ingredient { Name = "Chili Powder", Description = "" };
-            Ingredient greenPeppersIngredient = new Ingredient { Name = "Green Peppers", Description = "Green Bell Peppers" };
-            Ingredient beefsteakTomatoesIngredient = new Ingredient { Name = "Beefsteak Tomatoes", Description = "Whole Beefsteak Tomatoes" };
+            Ingredient dicedTomatoesIngredient = new() { Name = "Diced Tomatoes", Description = "" };
+            Ingredient chiliPowderIngredient = new() { Name = "Chili Powder", Description = "" };
+            Ingredient greenPeppersIngredient = new() { Name = "Green Peppers", Description = "Green Bell Peppers" };
+            Ingredient beefsteakTomatoesIngredient = new() { Name = "Beefsteak Tomatoes", Description = "Whole Beefsteak Tomatoes" };
 
             ingredients.Add(dicedTomatoesIngredient);
             ingredients.Add(chiliPowderIngredient);
@@ -182,27 +182,27 @@ namespace InMemoryData
             ingredients.Add(beefsteakTomatoesIngredient);
 
             List<RecipeIngredient> recipeIngredients4 = new List<RecipeIngredient>();
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = oliveOilIngredient, OrderId = 1, Quantity = "2 tbsp." });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = chickenBreastsIngredient, OrderId = 2, Quantity = "3 (~700g)" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = indianCurryBaseIngredient, OrderId = 3, Quantity = "1 portion (~600g)" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = serranoChiliesIngredient, OrderId = 4, Quantity = "2 sliced" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = dicedTomatoesIngredient, OrderId = 5, Quantity = "2 14.5oz cans" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = doubleConcentratedTomatoPasteIngredient, OrderId = 6, Quantity = "2 Tbsp." });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = groundTurmericIngredient, OrderId = 7, Quantity = "1 tsp" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = chiliPowderIngredient, OrderId = 8, Quantity = "1 tsp" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 9, Quantity = "" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = greenPeppersIngredient, OrderId = 10, Quantity = "2" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = beefsteakTomatoesIngredient, OrderId = 2, Quantity = "2 cubed" });
-            recipeIngredients4.Add(new RecipeIngredient { Ingredient = choppedCilantroIngredient, OrderId = 15, Quantity = "1 tbsp." });
+            recipeIngredients4.Add(new() { Ingredient = oliveOilIngredient, OrderId = 1, Quantity = "2 tbsp." });
+            recipeIngredients4.Add(new() { Ingredient = chickenBreastsIngredient, OrderId = 2, Quantity = "3 (~700g)" });
+            recipeIngredients4.Add(new() { Ingredient = indianCurryBaseIngredient, OrderId = 3, Quantity = "1 portion (~600g)" });
+            recipeIngredients4.Add(new() { Ingredient = serranoChiliesIngredient, OrderId = 4, Quantity = "2 sliced" });
+            recipeIngredients4.Add(new() { Ingredient = dicedTomatoesIngredient, OrderId = 5, Quantity = "2 14.5oz cans" });
+            recipeIngredients4.Add(new() { Ingredient = doubleConcentratedTomatoPasteIngredient, OrderId = 6, Quantity = "2 Tbsp." });
+            recipeIngredients4.Add(new() { Ingredient = groundTurmericIngredient, OrderId = 7, Quantity = "1 tsp" });
+            recipeIngredients4.Add(new() { Ingredient = chiliPowderIngredient, OrderId = 8, Quantity = "1 tsp" });
+            recipeIngredients4.Add(new() { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 9, Quantity = "" });
+            recipeIngredients4.Add(new() { Ingredient = greenPeppersIngredient, OrderId = 10, Quantity = "2" });
+            recipeIngredients4.Add(new() { Ingredient = beefsteakTomatoesIngredient, OrderId = 2, Quantity = "2 cubed" });
+            recipeIngredients4.Add(new() { Ingredient = choppedCilantroIngredient, OrderId = 15, Quantity = "1 tbsp." });
 
             List<RecipeIngredient> recipeIngredients5 = new List<RecipeIngredient>();
-            recipeIngredients5.Add(new RecipeIngredient { Ingredient = oliveOilIngredient, OrderId = 1, Quantity = "1 tbsp." });
-            recipeIngredients5.Add(new RecipeIngredient { Ingredient = longGrainRiceIngredient, OrderId = 2, Quantity = "2 cups" });
-            recipeIngredients5.Add(new RecipeIngredient { Ingredient = cuminSeedsIngredient, OrderId = 3, Quantity = "1/2 tsp." });
-            recipeIngredients5.Add(new RecipeIngredient { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 4, Quantity = "pinch" });
+            recipeIngredients5.Add(new() { Ingredient = oliveOilIngredient, OrderId = 1, Quantity = "1 tbsp." });
+            recipeIngredients5.Add(new() { Ingredient = longGrainRiceIngredient, OrderId = 2, Quantity = "2 cups" });
+            recipeIngredients5.Add(new() { Ingredient = cuminSeedsIngredient, OrderId = 3, Quantity = "1/2 tsp." });
+            recipeIngredients5.Add(new() { Ingredient = diamondCrystalKosherSaltIngredient, OrderId = 4, Quantity = "pinch" });
 
-            IngredientSection ingredientSection4 = new IngredientSection { OrderId = 1, Name = "Main", RecipeIngredients = recipeIngredients4, };
-            IngredientSection ingredientSection5 = new IngredientSection { OrderId = 2, Name = "Rice", RecipeIngredients = recipeIngredients5, };
+            IngredientSection ingredientSection4 = new() { OrderId = 1, Name = "Main", RecipeIngredients = recipeIngredients4, };
+            IngredientSection ingredientSection5 = new() { OrderId = 2, Name = "Rice", RecipeIngredients = recipeIngredients5, };
 
             List<IngredientSection> ingredientSections3 = new List<IngredientSection>();
             ingredientSections3.Add(ingredientSection4);

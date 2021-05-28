@@ -35,12 +35,12 @@ namespace UI.Pages
         {
             if (!string.IsNullOrEmpty(NewRecipeName))
             {
-                Recipe recipe = new Recipe {
+                Recipe recipe = new() {
                     Name = NewRecipeName, Description = "<Add description here>",
                     AuthorId = new Guid("00000000-0000-0000-0000-000000000000"), };
                 await RecipeUseCases.AddRecipe(recipe);
 
-                IngredientSection ingredientSection = new IngredientSection { OrderId = 1, Name = "Main", };
+                IngredientSection ingredientSection = new() { OrderId = 1, Name = "Main", };
                 await RecipeUseCases.AddIngredientSection(recipe.Id, ingredientSection);
                 
                 InstructionSection instructionSection = new InstructionSection { OrderId = 1, Name = "Main", };

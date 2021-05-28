@@ -28,17 +28,17 @@ namespace Unit.Tests
             };
             await _recipeUseCases.AddRecipe(recipe);
 
-            Ingredient ingredient1 = new Ingredient { Name = "Fish", Description = "Breaded Fish" };
+            Ingredient ingredient1 = new() { Name = "Fish", Description = "Breaded Fish" };
             await _recipeUseCases.AddIngredient(ingredient1);
-            Ingredient ingredient2 = new Ingredient { Name = "Long Cut Potatoes", Description = "" };
+            Ingredient ingredient2 = new() { Name = "Long Cut Potatoes", Description = "" };
             await _recipeUseCases.AddIngredient(ingredient2);
 
-            IngredientSection ingredientSection = new IngredientSection { Name = "Main", };
+            IngredientSection ingredientSection = new() { Name = "Main", };
             await _recipeUseCases.AddIngredientSection(recipe.Id, ingredientSection);
 
-            RecipeIngredient recipeIngredient1 = new RecipeIngredient { Ingredient = ingredient1, OrderId = 1, Quantity = "4" };
+            RecipeIngredient recipeIngredient1 = new() { Ingredient = ingredient1, OrderId = 1, Quantity = "4" };
             await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient1);
-            RecipeIngredient recipeIngredient2 = new RecipeIngredient { Ingredient = ingredient2, OrderId = 2, Quantity = "2 potatos" };
+            RecipeIngredient recipeIngredient2 = new() { Ingredient = ingredient2, OrderId = 2, Quantity = "2 potatos" };
             await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient2);
 
             //Act
@@ -53,7 +53,7 @@ namespace Unit.Tests
         public async Task SearchRecipeReturnsProperResults()
         {
             //Arrange
-            Recipe recipe1 = new Recipe {
+            Recipe recipe1 = new() {
                 AuthorId = _firstAuthor,
                 Name = "Beef and Bacon",
                 Description = "A rich beef, mushroom, onion, and bacon dish served over noodles.",
@@ -93,27 +93,27 @@ namespace Unit.Tests
         public async Task AddingNewRecipeIngredientAddsItToTheEndOfTheList()
         {
             //Arrange
-            Recipe recipe = new Recipe { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
+            Recipe recipe = new() { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
             await _recipeUseCases.AddRecipe(recipe);
 
-            IngredientSection ingredientSection = new IngredientSection { Name = "Main", };
+            IngredientSection ingredientSection = new() { Name = "Main", };
             await _recipeUseCases.AddIngredientSection(recipe.Id, ingredientSection);
 
-            Ingredient ingredient1 = new Ingredient { Name = "Sugar", Description = "Granulated White Sugar" };
+            Ingredient ingredient1 = new() { Name = "Sugar", Description = "Granulated White Sugar" };
             await _recipeUseCases.AddIngredient(ingredient1);
-            Ingredient ingredient2 = new Ingredient { Name = "Unsalted Butter", Description = "" };
+            Ingredient ingredient2 = new() { Name = "Unsalted Butter", Description = "" };
             await _recipeUseCases.AddIngredient(ingredient2);
 
-            RecipeIngredient recipeIngredient1 = new RecipeIngredient { Ingredient = ingredient1, OrderId = 1, Quantity = "1 cup" };
+            RecipeIngredient recipeIngredient1 = new() { Ingredient = ingredient1, OrderId = 1, Quantity = "1 cup" };
             await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient1);
-            RecipeIngredient recipeIngredient2 = new RecipeIngredient { Ingredient = ingredient2, OrderId = 2, Quantity = "2 tbsp." };
+            RecipeIngredient recipeIngredient2 = new() { Ingredient = ingredient2, OrderId = 2, Quantity = "2 tbsp." };
             await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient2);
 
             //Act
-            Ingredient ingredient3 = new Ingredient { Name = "Flour", Description = "All Purpose Flour" };
+            Ingredient ingredient3 = new() { Name = "Flour", Description = "All Purpose Flour" };
             await _recipeUseCases.AddIngredient(ingredient3);
 
-            RecipeIngredient recipeIngredient3 = new RecipeIngredient { Ingredient = ingredient3, Quantity = "2 cups" };
+            RecipeIngredient recipeIngredient3 = new() { Ingredient = ingredient3, Quantity = "2 cups" };
             await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient3);
 
             //Assert
@@ -125,21 +125,21 @@ namespace Unit.Tests
         public async Task CannotRemoveIngredientIfTheyAreOnRecipes()
         {
             //Arrange
-            Recipe recipe = new Recipe { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
+            Recipe recipe = new() { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
             await _recipeUseCases.AddRecipe(recipe);
 
-            IngredientSection ingredientSection = new IngredientSection { Name = "Main", OrderId = 1, };
+            IngredientSection ingredientSection = new() { Name = "Main", OrderId = 1, };
             await _recipeUseCases.AddIngredientSection(recipe.Id, ingredientSection);
 
-            Ingredient ingredient1 = new Ingredient { Name = "Water", Description = "" };
+            Ingredient ingredient1 = new() { Name = "Water", Description = "" };
             await _recipeUseCases.AddIngredient(ingredient1);
 
-            Ingredient ingredient2 = new Ingredient { Name = "Flour", Description = "Basic white wheat flour." };
+            Ingredient ingredient2 = new() { Name = "Flour", Description = "Basic white wheat flour." };
             await _recipeUseCases.AddIngredient(ingredient2);
 
-            RecipeIngredient recipeIngredient1 = new RecipeIngredient { Ingredient = ingredient1, OrderId = 1, Quantity = "1 cup" };
+            RecipeIngredient recipeIngredient1 = new() { Ingredient = ingredient1, OrderId = 1, Quantity = "1 cup" };
             await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient1);
-            RecipeIngredient recipeIngredient2 = new RecipeIngredient { Ingredient = ingredient2, OrderId = 2, Quantity = "2 cups" };
+            RecipeIngredient recipeIngredient2 = new() { Ingredient = ingredient2, OrderId = 2, Quantity = "2 cups" };
             await _recipeUseCases.AddRecipeIngredient(recipe.Id, ingredientSection.Id, recipeIngredient2);
 
             //Act
@@ -153,25 +153,25 @@ namespace Unit.Tests
         public async Task CanGetAllRecipeIngredientsInNestedSections()
         {
             //Arrange
-            Recipe headerOnlyRecipe = new Recipe { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
+            Recipe headerOnlyRecipe = new() { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
             await _recipeUseCases.AddRecipe(headerOnlyRecipe);
 
-            Ingredient ingredient1 = new Ingredient { Name = "Steak", Description = "Filet Mignon Preferred" };
+            Ingredient ingredient1 = new() { Name = "Steak", Description = "Filet Mignon Preferred" };
             await _recipeUseCases.AddIngredient(ingredient1);
 
-            Ingredient ingredient2 = new Ingredient { Name = "Peas", Description = "Frozen or Fresh Peas" };
+            Ingredient ingredient2 = new() { Name = "Peas", Description = "Frozen or Fresh Peas" };
             await _recipeUseCases.AddIngredient(ingredient2);
 
-            IngredientSection ingredientSectionParent = new IngredientSection { Name = "Main", OrderId = 1, };
+            IngredientSection ingredientSectionParent = new() { Name = "Main", OrderId = 1, };
             await _recipeUseCases.AddIngredientSection(headerOnlyRecipe.Id, ingredientSectionParent);
 
-            IngredientSection childIngredientSection = new IngredientSection { Name = "Subsection", OrderId = 1, };
+            IngredientSection childIngredientSection = new() { Name = "Subsection", OrderId = 1, };
             await _recipeUseCases.AddIngredientSection(headerOnlyRecipe.Id, childIngredientSection, ingredientSectionParent.Id);
 
             //Act
-            RecipeIngredient parentRecipeIngredient = new RecipeIngredient { Quantity = "6oz", Ingredient = ingredient1, OrderId = 1 };
+            RecipeIngredient parentRecipeIngredient = new() { Quantity = "6oz", Ingredient = ingredient1, OrderId = 1 };
             await _recipeUseCases.AddRecipeIngredient(headerOnlyRecipe.Id, ingredientSectionParent.Id, parentRecipeIngredient);
-            RecipeIngredient childRecipeIngredient = new RecipeIngredient { Quantity = "3", Ingredient = ingredient2, OrderId = 2 };
+            RecipeIngredient childRecipeIngredient = new() { Quantity = "3", Ingredient = ingredient2, OrderId = 2 };
             await _recipeUseCases.AddRecipeIngredient(headerOnlyRecipe.Id, ingredientSectionParent.Id, childRecipeIngredient);
 
             //Assert
@@ -185,26 +185,26 @@ namespace Unit.Tests
         public async Task CanAddBasicIngredientParentChildSectionsIncludingRecipeIngredientsToEach()
         {
             //Arrange
-            Recipe headerOnlyRecipe = new Recipe { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
+            Recipe headerOnlyRecipe = new() { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
             await _recipeUseCases.AddRecipe(headerOnlyRecipe);
 
-            Ingredient ingredient1 = new Ingredient { Name = "Rice", Description = "Jasmine or any long grain rice" };
+            Ingredient ingredient1 = new() { Name = "Rice", Description = "Jasmine or any long grain rice" };
             await _recipeUseCases.AddIngredient(ingredient1);
 
-            Ingredient ingredient2 = new Ingredient { Name = "Eggs", Description = "" };
+            Ingredient ingredient2 = new() { Name = "Eggs", Description = "" };
             await _recipeUseCases.AddIngredient(ingredient2);
 
             //Act
-            IngredientSection ingredientSectionParent = new IngredientSection { Name = "Main", OrderId = 1, };
+            IngredientSection ingredientSectionParent = new() { Name = "Main", OrderId = 1, };
             await _recipeUseCases.AddIngredientSection(headerOnlyRecipe.Id, ingredientSectionParent);
 
-            IngredientSection ingredientSection = new IngredientSection { Name = "Subsection", OrderId = 1, };
+            IngredientSection ingredientSection = new() { Name = "Subsection", OrderId = 1, };
             await _recipeUseCases.AddIngredientSection(headerOnlyRecipe.Id, ingredientSection, ingredientSectionParent.Id);
 
-            RecipeIngredient recipeIngredients1 = new RecipeIngredient { Quantity = "2 cups", Ingredient = ingredient1, OrderId = 1 };
+            RecipeIngredient recipeIngredients1 = new() { Quantity = "2 cups", Ingredient = ingredient1, OrderId = 1 };
             await _recipeUseCases.AddRecipeIngredient(headerOnlyRecipe.Id, ingredientSectionParent.Id, recipeIngredients1);
 
-            RecipeIngredient recipeIngredients2 = new RecipeIngredient { Quantity = "3", Ingredient = ingredient2, OrderId = 2 };
+            RecipeIngredient recipeIngredients2 = new() { Quantity = "3", Ingredient = ingredient2, OrderId = 2 };
             await _recipeUseCases.AddRecipeIngredient(headerOnlyRecipe.Id, ingredientSection.Id, recipeIngredients2);
 
             //Assert
@@ -222,10 +222,10 @@ namespace Unit.Tests
         public async Task CanAddEmptyIngredientSectionToRecipe()
         {
             //Arrange
-            Recipe headerOnlyRecipe = new Recipe { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
+            Recipe headerOnlyRecipe = new() { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
             await _recipeUseCases.AddRecipe(headerOnlyRecipe);
 
-            IngredientSection emptyIngredientSection = new IngredientSection { OrderId = 1, Name = "Main" };
+            IngredientSection emptyIngredientSection = new() { OrderId = 1, Name = "Main" };
 
             //Act
             await _recipeUseCases.AddIngredientSection(headerOnlyRecipe.Id, emptyIngredientSection);
@@ -239,7 +239,7 @@ namespace Unit.Tests
         public async Task CanRemoveIngredient()
         {
             //Arrange
-            Ingredient ingredient = new Ingredient { Name = "Food", Description = "Basic ingredient for food." };
+            Ingredient ingredient = new() { Name = "Food", Description = "Basic ingredient for food." };
             await _recipeUseCases.AddIngredient(ingredient);
 
             //Act
@@ -255,7 +255,7 @@ namespace Unit.Tests
         public async Task CanAddIngredient()
         {
             //Arrange
-            Ingredient ingredient = new Ingredient { Name = "Food", Description = "Basic ingredient for food." };
+            Ingredient ingredient = new() { Name = "Food", Description = "Basic ingredient for food." };
 
             //Act
             await _recipeUseCases.AddIngredient(ingredient);
@@ -269,7 +269,7 @@ namespace Unit.Tests
         public async Task CanRemoveRecipe()
         {
             //Arrange
-            Recipe headerOnlyRecipe = new Recipe { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
+            Recipe headerOnlyRecipe = new() { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
             await _recipeUseCases.AddRecipe(headerOnlyRecipe);
 
             //Act
@@ -294,19 +294,19 @@ namespace Unit.Tests
             //Act
             await _recipeUseCases.AddRecipe(basicRecipe);
 
-            IngredientSection ingredientSection = new IngredientSection { Name = "Main", OrderId = 1, };
+            IngredientSection ingredientSection = new() { Name = "Main", OrderId = 1, };
             await _recipeUseCases.AddIngredientSection(basicRecipe.Id, ingredientSection);
 
-            Ingredient ingredient = new Ingredient { Name = "Flank Steak", Description = "" };
+            Ingredient ingredient = new() { Name = "Flank Steak", Description = "" };
             await _recipeUseCases.AddIngredient(ingredient);
 
-            RecipeIngredient recipeIngredient = new RecipeIngredient { Quantity = "6oz", Ingredient = ingredient, OrderId = 1, };
+            RecipeIngredient recipeIngredient = new() { Quantity = "6oz", Ingredient = ingredient, OrderId = 1, };
             await _recipeUseCases.AddRecipeIngredient(basicRecipe.Id, ingredientSection.Id, recipeIngredient);
 
-            InstructionSection instructionSection = new InstructionSection { Name = "Main", OrderId = 1, };
+            InstructionSection instructionSection = new() { Name = "Main", OrderId = 1, };
             await _recipeUseCases.AddInstructionSection(basicRecipe.Id, instructionSection);
 
-            RecipeInstruction recipeInstruction = new RecipeInstruction { Description = "Sear in butter.", OrderId = 1, };
+            RecipeInstruction recipeInstruction = new() { Description = "Sear in butter.", OrderId = 1, };
             await _recipeUseCases.AddRecipeInstruction(basicRecipe.Id, instructionSection.Id, recipeInstruction);
 
             //Assert
@@ -322,7 +322,7 @@ namespace Unit.Tests
         public async Task CanAddHeaderOnlyRecipe()
         {
             //Arrange
-            Recipe headerOnlyRecipe = new Recipe { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic header only recipe for food." };
+            Recipe headerOnlyRecipe = new() { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic header only recipe for food." };
 
             //Act
             await _recipeUseCases.AddRecipe(headerOnlyRecipe);
@@ -346,7 +346,7 @@ namespace Unit.Tests
         public void RecipeNameAndDescriptionOutputsProperly()
         {
             //Arrange
-            Recipe headerOnlyRecipe = new Recipe { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
+            Recipe headerOnlyRecipe = new() { AuthorId = _defaultAuthor, Name = "Food", Description = "Basic recipe for food." };
 
             //Assert
             Assert.That(headerOnlyRecipe.ToString() == "Food: Basic recipe for food.");

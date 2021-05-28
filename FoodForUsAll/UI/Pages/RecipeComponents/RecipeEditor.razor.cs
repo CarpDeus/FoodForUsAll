@@ -14,7 +14,7 @@ namespace UI.Pages
     public partial class RecipeEditorModel : ComponentBase
     {
         [Inject]
-        public RecipesState recipesState { get; set; }
+        public RecipesState RecipesState { get; set; }
         [Inject]
         IRecipeUseCases RecipeUseCases { get; set; }
 
@@ -38,7 +38,7 @@ namespace UI.Pages
         protected override async Task OnParametersSetAsync()
         {
             if (RecipeId != null)
-                Recipe = await RecipeUseCases.GetRecipe(recipesState.RecipeId.Value);
+                Recipe = await RecipeUseCases.GetRecipe(RecipesState.RecipeId.Value);
             else
                 Recipe = null;
 
