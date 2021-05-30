@@ -74,14 +74,7 @@ namespace UI
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 
-            services.AddRazorPages(options =>
-            {
-                options.Conventions.AuthorizeFolder("/RecipeComponents");
-                options.Conventions.AuthorizeFolder("/SurveyComponents");
-                options.Conventions.AllowAnonymousToPage("/About");
-                options.Conventions.AllowAnonymousToPage("/Privacy");
-                options.Conventions.AllowAnonymousToPage("/TermsOfService");
-            });
+            services.AddRazorPages();
             services.AddServerSideBlazor();
 
             services.ConfigureApplicationCookie(o => {

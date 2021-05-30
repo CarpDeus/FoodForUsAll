@@ -24,8 +24,12 @@ namespace UI.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (!User.Identity.IsAuthenticated)
+                return Redirect("/");
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)

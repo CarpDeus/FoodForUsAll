@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,9 +26,8 @@ namespace UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Recipe = await RecipeUseCases.GetRecipe(RecipeId);
-
             await base.OnInitializedAsync();
+            Recipe = await RecipeUseCases.GetRecipe(RecipeId);
         }
 
         protected override async Task OnParametersSetAsync()

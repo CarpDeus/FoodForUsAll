@@ -1,5 +1,5 @@
 ﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href=""><img src="images/FoodForUsAll-Banner.jpg" width="160" height="40" alt="Food For Us All" /></a>
+    <a class="navbar-brand" href=""><img src="images/FoodForUsAll-Banner.gif" width="160" height="40" alt="Food For Us All" /></a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -70,7 +70,7 @@
         if (prevClickedMenu != clickedMenu)
         {
             expandSubNav = false;
-            if (mi.PageName != "" || mi.MenuName == "Home")
+            if (mi.PageName != "Index" || mi.MenuName == "Home")
             {
                 hasPageName = true;
             }
@@ -92,11 +92,11 @@
     {
         menuList = new List<MenuInfo>();
 
-        menuList.Add(new MenuInfo { MenuId = 1, ParentMenuId = 0, PageName = "", MenuName = "Recipes", MenuIcon = "oi oi-plus" });
+        menuList.Add(new MenuInfo { MenuId = 1, ParentMenuId = 0, PageName = "Index", MenuName = "Recipes", MenuIcon = "oi oi-plus" });
         menuList.Add(new MenuInfo { MenuId = 10, ParentMenuId = 1, PageName = "MyRecipes", MenuName = "MyRecipes", MenuIcon = "" });
         menuList.Add(new MenuInfo { MenuId = 11, ParentMenuId = 1, PageName = "Recipes", MenuName = "Recipes", MenuIcon = "" });
 
-        menuList.Add(new MenuInfo { MenuId = 2, ParentMenuId = 0, PageName = "", MenuName = "Food Survey", MenuIcon = "oi oi-plus" });
+        menuList.Add(new MenuInfo { MenuId = 2, ParentMenuId = 0, PageName = "Index", MenuName = "Food Survey", MenuIcon = "oi oi-plus" });
         menuList.Add(new MenuInfo { MenuId = 20, ParentMenuId = 2, PageName = "SendSurveys", MenuName = "Send Survey", MenuIcon = "" });
         menuList.Add(new MenuInfo { MenuId = 21, ParentMenuId = 2, PageName = "ReviewSurveys", MenuName = "Review Surveys", MenuIcon = "" });
     }
