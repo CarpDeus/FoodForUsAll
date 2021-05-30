@@ -19,10 +19,10 @@
         <div class="col-lg-5">
             <h1 class="font-weight-light">What're We About?</h1>
             <p>
-                "Food For Us All" is a place to easily enter your recipes with the ability to share them with
-                both those you love as well as others in the community. It is your choice!
+                "Food For Us All" is a place to easily enter your favorite recipes and share them with
+                those you love as well as others in the community. It is your choice who can see them!
                 <br />
-                Use the "Food Survey" functionality to find what people's preferences, dislikes and allergies
+                Use the "Food Survey" functionality to find what people's preferences, dislikes, and allergies
                 are so that you can create the perfect meal, appetizer, or snack to make everybody happy.
             </p>
             <a class="btn btn-primary" href="Identity/Account/Register">Register Now!</a>
@@ -35,9 +35,9 @@
                 <div class="card-body">
                     <h2 class="card-title">Ingredients</h2>
                     <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Ingredients/pexels-oleg-magni-890507.jpg" alt="..." /></p>
-                    <p>Enter in your recipe with ingredients and generate grocery lists to make sure nothing is missed when you're making your favorite dish.</p>
+                    <p>After you enter your recipes you can generate grocery lists to make sure nothing is missed when you're preparing to make your favorite dishes.</p>
                 </div>
-                <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                <div class="card-footer"><a id="ingredientsmoreinfo" class="btn btn-primary btn-sm" href="#ingredients">More Info</a></div>
             </div>
         </div>
         <div class="col-md-4 mb-5">
@@ -45,9 +45,9 @@
                 <div class="card-body">
                     <h2 class="card-title">Recipes</h2>
                     <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Dishes/pexels-marvin-ozz-2474661.jpg" alt="..." /></p>
-                    <p>Easily enter in and share your favorite recipes via our highly customizable interface.</p>
+                    <p>Easily enter and share your favorite recipes via our highly customizable interface.</p>
                 </div>
-                <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                <div class="card-footer"><a id="recipesmoreinfo" class="btn btn-primary btn-sm" href="#recipes">More Info</a></div>
             </div>
         </div>
         <div class="col-md-4 mb-5">
@@ -55,10 +55,67 @@
                 <div class="card-body">
                     <h2 class="card-title">Surveys</h2>
                     <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Dishes/pexels-abhinav-goswami-291528.jpg" alt="..." /></p>
-                    <p>Send one or more recipes to friends, family and coworkers to find out what their preferences are so that you can make a dish everyone will enjoy.</p>
+                    <p>Send one or more recipes to friends, family, coworkers, etc... to find out what their preferences and dietary concerns are so that you can make a dish everyone will enjoy.</p>
                 </div>
-                <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                <div class="card-footer"><a id="surveysmoreinfo" class="btn btn-primary btn-sm" href="#surveys">More Info</a></div>
             </div>
         </div>
     </div>
 </div>
+<div id="ingredients" class="container px-4 px-lg-5" style="display:none">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <img id="logo" width="400" src="images/pexels-cottonbro-4057737.jpg" />
+        </div>
+        <div class="col-lg-6">
+            How often have you started making your favorite dish only to find out you've forgotten to buy something you needed?
+            With the "Grocery List Generator" you can plan out your shopping better to make sure nothing is missed.  ???
+        </div>
+    </div>
+</div>
+<div id="recipes" class="container px-4 px-lg-5" style="display:none">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <img id="logo" width="400" src="images/Dishes/pexels-anna-tarazevich-6937455.jpg" />
+        </div>
+        <div class="col-lg-6">
+            Enter your favorite recipes with our easy to use and responsive interface. Choose who to share them with and
+            solicit feedback from others to improve your cooking. ???
+        </div>
+    </div>
+</div>
+<div id="surveys" class="container px-4 px-lg-5" style="display:none">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <img id="logo" width="400" src="images/pexels-karolina-grabowska-4226805.jpg" />
+        </div>
+        <div class="col-lg-6">
+            How often have you made a dish for a gathering only to find out someone has an allergy to one of the ingredients?
+            What about that relative that hates onions, or the friend that has been trying to become a vegetarian? Well, now
+            you can reach out in advance to find out the dietary needs and preferences of those who will be at your gathering.
+            Just ???
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#ingredientsmoreinfo").click(function () {
+                $("#ingredients").show();
+                $("#recipes").hide();
+                $("#surveys").hide();
+            });
+            $("#recipesmoreinfo").click(function () {
+                $("#ingredients").hide();
+                $("#recipes").show();
+                $("#surveys").hide();
+            });
+            $("#surveysmoreinfo").click(function () {
+                $("#ingredients").hide();
+                $("#recipes").hide();
+                $("#surveys").show();
+            });
+        });
+    </script>
+}
