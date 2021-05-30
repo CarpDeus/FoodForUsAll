@@ -21,9 +21,16 @@ else
 <h3>My Recipe List</h3>
 
 <div class="main">
-@foreach (Recipe recipe in Recipes)
+@if (Recipes.Count > 0)
 {
-    <span class="@((recipe.Id==RecipesState.RecipeId)?"text-light bg-dark":"")" title="@recipe.ToString()" @onclick='() => ViewRecipe(recipe.Id)'>@recipe.Name</span> <span style="font-size: 12px;" title="Edit" class="oi oi-pencil" aria-hidden="true" @onclick='() => EditRecipe(recipe.Id)'/><br />
+    @foreach (Recipe recipe in Recipes)
+    {
+        <span class="@((recipe.Id == RecipesState.RecipeId) ? "text-light bg-dark" : "")" title="@recipe.ToString()" @onclick='() => ViewRecipe(recipe.Id)'>@recipe.Name</span> <span style="font-size: 12px;" title="Edit" class="oi oi-pencil" aria-hidden="true" @onclick='() => EditRecipe(recipe.Id)'/><br />
+    }
+}
+else
+{
+    <span>None found with "@SearchString" in the recipe name or description.</span>
 }
 </div>
 </EditForm>
