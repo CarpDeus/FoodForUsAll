@@ -18,11 +18,6 @@ namespace UI.Pages
         [Inject]
         IRecipeUseCases RecipeUseCases { get; set; }
 
-        [CascadingParameter(Name = "RecipeId")]
-        public int? RecipeId { get; set; }
-        [CascadingParameter(Name = "IsEditable")]
-        public bool IsEditable { get; set; } = false;
-
         public Dictionary<int,bool> AddNewIngredientNameIsVisible { get; set; }
         public string NewIngredientName { get; set; }
 
@@ -37,12 +32,12 @@ namespace UI.Pages
 
         protected override async Task OnParametersSetAsync()
         {
-            if (RecipeId != null)
+            await base.OnParametersSetAsync();
+
+            if (RecipesState.RecipeId != null)
                 Recipe = await RecipeUseCases.GetRecipe(RecipesState.RecipeId.Value);
             else
                 Recipe = null;
-
-            await base.OnParametersSetAsync();
         }
 
         public async Task RecipeNameUpdated(int recipeId, string newRecipeName)

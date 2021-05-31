@@ -7,10 +7,16 @@
 {
     <div class="container">
         @if (IsEditable)
-        {<h5>
-            <u><InputText style="width:50%" @bind-Value="@ingredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, ingredientSection.Id, ingredientSection.Name))" /></u>
-            @if (ingredientSection.OrderId > 1) { <span style="font-size: 12px;" class="oi oi-caret-top" aria-hidden="true" />} <span style="font-size: 12px;" class="oi oi-caret-bottom" aria-hidden="true" />
-         </h5> }
+        {
+            <h5>
+                <u><InputText style="width:50%" @bind-Value="@ingredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, ingredientSection.Id, ingredientSection.Name))" /></u>
+                @if (ingredientSection.OrderId > 1)
+                {
+                    <span style="font-size: 12px;" class="oi oi-caret-top" aria-hidden="true" />
+                }
+                <span style="font-size: 12px;" class="oi oi-caret-bottom" aria-hidden="true" />
+            </h5>
+        }
         else
         { <h5><u>@ingredientSection.Name</u></h5>}
         @if (IsEditable)

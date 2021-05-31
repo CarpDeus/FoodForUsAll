@@ -17,6 +17,9 @@ namespace UI.Pages
         public RecipesState RecipesState { get; set; }
         [Inject]
         IRecipeUseCases RecipeUseCases { get; set; }
+        [Inject]
+        NavigationManager NavManager { get; set; }
+
         public IReadOnlyList<Recipe> Recipes { get; set; }
 
         public bool AddNewRecipeIsVisible { get; set; } = false;
@@ -27,6 +30,14 @@ namespace UI.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+            if ((await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"))).Count == 0)
+            {
+                foreach (Ingredient ingredient in InMemoryData.Samples.Ingredients)
+                    await RecipeUseCases.AddIngredient(ingredient);
+                foreach (Recipe recipe in InMemoryData.Samples.Recipes)
+                    await RecipeUseCases.AddRecipe(recipe);
+            }
+
             Recipes = await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
         }
 
@@ -61,11 +72,13 @@ namespace UI.Pages
         public void ViewRecipe(int recipeId)
         {
             RecipesState.SetRecipeId(recipeId, false);
+            NavManager.NavigateTo("/RecipeViewer");
         }
 
         public void EditRecipe(int recipeId)
         {
             RecipesState.SetRecipeId(recipeId, true);
+            NavManager.NavigateTo("/RecipeEditor");
         }
 
         public void SetAddNewRecipeIsVisible()

@@ -1,0 +1,33 @@
+﻿@page "/RecipeViewer"
+@inherits UI.Pages.RecipeViewerModel
+@using Domain;
+
+<div class="main">
+@if (Recipe == null)
+{
+    <div></div>
+}
+else
+{
+<h3>
+    <span>@Recipe.Name</span> <button type="button" class="btn btn-primary btn-sm" @onclick="(() => EditRecipe())">Edit</button>
+</h3>
+<h6>
+    <span>@Recipe.Description</span>
+</h6>
+<hr />
+<h4>Ingredients</h4>
+    <CascadingValue Name="RecipeId" Value="@Recipe.Id">
+        <CascadingValue Name="IsEditable" Value="false">
+            <IngredientSectionsEditor />
+        </CascadingValue>
+    </CascadingValue>
+<hr />
+<h4>Instructions</h4>
+    <CascadingValue Name="RecipeId" Value="@Recipe.Id">
+        <CascadingValue Name="IsEditable" Value="false">
+            <InstructionSectionsEditor />
+        </CascadingValue>
+    </CascadingValue>
+}
+</div>

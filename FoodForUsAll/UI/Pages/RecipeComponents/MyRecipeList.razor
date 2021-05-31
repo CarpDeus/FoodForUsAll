@@ -25,7 +25,7 @@ else
 {
     @foreach (Recipe recipe in Recipes)
     {
-        <span class="@((recipe.Id == RecipesState.RecipeId) ? "text-light bg-dark" : "")" title="@recipe.ToString()" @onclick='() => ViewRecipe(recipe.Id)'>@recipe.Name</span> <span style="font-size: 12px;" title="Edit" class="oi oi-pencil" aria-hidden="true" @onclick='() => EditRecipe(recipe.Id)'/><br />
+        <span title="@recipe.ToString()" @onclick='() => ViewRecipe(recipe.Id)'>@recipe.Name</span> <span style="font-size: 12px;" title="Edit" class="oi oi-pencil" aria-hidden="true" @onclick='() => EditRecipe(recipe.Id)'/><br />
     }
 }
 else
