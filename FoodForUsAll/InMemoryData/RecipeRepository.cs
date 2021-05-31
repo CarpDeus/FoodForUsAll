@@ -27,7 +27,7 @@ namespace InMemoryData
 
         public async Task<List<Ingredient>> GetAllIngredients()
         {
-            return _ingredients.Values.ToList();
+            return _ingredients.Values.OrderBy(x => x.Name).ToList();
         }
 
         public async Task AddIngredient(Ingredient ingredient)

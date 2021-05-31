@@ -1,104 +1,22 @@
 ﻿<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href=""><img src="images/FoodForUsAll-Banner.gif" width="160" height="40" alt="Food For Us All" /></a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    @if (menuList.Count() == 0) {
-        <p><em>Loading...</em></p>
-    }
-    else {
-        <ul class="nav flex-column">
-            @foreach(var item in menuList) {
-                @if (item.ParentMenuId == 0) {
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="@item.PageName" @onclick="()=>GetIsClicked(item)">
-                            <span class="@item.MenuIcon" aria-hidden="true"></span>@item.MenuName
-                        </NavLink>
-                        <ul class="nav flex-column">
-                            @foreach(var subitem in menuList) {
-                                @if (item.MenuId == subitem.ParentMenuId) {
-                                    @if (expandSubNav && item.MenuId == clickedMenu) {
-                                        <li class="nav-item px-3">
-                                            <NavLink class="nav-link" href="@subitem.PageName" @onclick="()=>GetIsClicked(subitem)">
-                                                <span class="@subitem.MenuIcon" aria-hidden="true"></span>@subitem.MenuName
-                                            </NavLink>
-                                        </li>
-                                    }
-                                }
-                            }
-                        </ul>
-                    </li>
-                }
-            }
-        </ul>
-    }
-</div>
-
-@code {
-    class MenuInfo
-    {
-        public int MenuId { get; set; }
-        public int ParentMenuId { get; set; }
-        public string PageName { get; set; }
-        public string MenuName { get; set; }
-        public string MenuIcon { get; set; }
-    }
-
-    bool collapseNavMenu = true;
-    bool expandSubNav;
-    int clickedMenu = 0;
-    bool hasPageName = true;
-    int prevClickedMenu = 0;
-    string NavMenuCssClass => collapseNavMenu ? "collapse" : "";
-
-    List<MenuInfo> menuList;
-
-    void ToggleNavMenu()
-    {
-        @if (hasPageName)
-        {
-            collapseNavMenu = !collapseNavMenu;
-        }
-    }
-
-    void GetIsClicked(MenuInfo mi)
-    {
-        clickedMenu = mi.MenuId;
-        if (prevClickedMenu != clickedMenu)
-        {
-            expandSubNav = false;
-            if (mi.PageName != "Index" || mi.MenuName == "Home")
-            {
-                hasPageName = true;
-            }
-            else
-            {
-                expandSubNav = !expandSubNav;
-                hasPageName = false;
-            }
-        }
-        else
-        {
-            expandSubNav = !expandSubNav;
-        }
-
-        prevClickedMenu = clickedMenu;
-    }
-
-    protected override void OnInitialized()
-    {
-        menuList = new List<MenuInfo>();
-
-        menuList.Add(new MenuInfo { MenuId = 1, ParentMenuId = 0, PageName = "Index", MenuName = "Recipes", MenuIcon = "oi oi-plus" });
-        menuList.Add(new MenuInfo { MenuId = 10, ParentMenuId = 1, PageName = "MyRecipes", MenuName = "My Recipes", MenuIcon = "" });
-        menuList.Add(new MenuInfo { MenuId = 11, ParentMenuId = 1, PageName = "MyGroceries", MenuName = "My Groceries", MenuIcon = "" });
-        menuList.Add(new MenuInfo { MenuId = 12, ParentMenuId = 1, PageName = "Recipes", MenuName = "Community Recipes", MenuIcon = "" });
-
-        menuList.Add(new MenuInfo { MenuId = 2, ParentMenuId = 0, PageName = "Index", MenuName = "Food Survey", MenuIcon = "oi oi-plus" });
-        menuList.Add(new MenuInfo { MenuId = 20, ParentMenuId = 2, PageName = "SendSurveys", MenuName = "Send Survey", MenuIcon = "" });
-        menuList.Add(new MenuInfo { MenuId = 21, ParentMenuId = 2, PageName = "ReviewSurveys", MenuName = "Review Surveys", MenuIcon = "" });
-    }
-}
+<ul class="nav flex-column">
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="MyRecipes"> My Recipes</NavLink>
+    </li>
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="MyGroceries"> My Groceries</NavLink>
+    </li>
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="Recipes"> Community Recipes</NavLink>
+    </li>
+    <li><hr /></li>
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="SendSurveys"> Send Surveys</NavLink>
+    </li>
+    <li class="nav-item px-3">
+        <NavLink class="nav-link" href="ReviewSurveys"> Review Surveys</NavLink>
+    </li>
+</ul>

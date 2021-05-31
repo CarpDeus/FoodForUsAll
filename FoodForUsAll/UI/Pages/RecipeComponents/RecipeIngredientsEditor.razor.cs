@@ -25,14 +25,14 @@ namespace UI.Pages
 
         public bool AddNewIngredientNameIsVisible { get; set; }
         public string NewIngredientName { get; set; }
+        public List<Ingredient> Ingredients { get; set; }
 
         public IngredientSection IngredientSection { get; set; }
-
-        public List<Ingredient> IngredientList { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             IngredientSection = await RecipeUseCases.GetIngredientSection(RecipeId, IngredientSectionId);
+            Ingredients = await RecipeUseCases.GetAllIngredients();
             await base.OnInitializedAsync();
         }
 

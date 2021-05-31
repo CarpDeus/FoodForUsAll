@@ -72,7 +72,8 @@ namespace DbData
                             Id,
                             [Name],
                             [Description]
-                        FROM Recipes.Ingredient;";
+                        FROM Recipes.Ingredient
+                        ORDER BY [Name];";
 
                 await conn.OpenAsync();
 
