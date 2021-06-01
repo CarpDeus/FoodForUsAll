@@ -10,6 +10,38 @@
 else
 {
 <EditForm Model="Recipe">
+<div class="container">
+    <div class="row gx-4 gx-lg-5">
+        <div class="col-md-3 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="data:image/bmp;base64, @(Convert.ToBase64String(Recipe.PrimaryImage.Image))" alt="..." /></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Dishes/pexels-marvin-ozz-2474661.jpg" alt="..." /></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Dishes/pexels-abhinav-goswami-291528.jpg" alt="..." /></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Ingredients/pexels-oleg-magni-890507.jpg" alt="..." /></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <h3>
     <InputText style="width:60%" @bind-Value="@Recipe.Name" @onfocusout="(async () => await RecipeNameUpdated(Recipe.Id, Recipe.Name))" />
 </h3>

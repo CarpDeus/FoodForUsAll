@@ -21,6 +21,8 @@ namespace DbData
         Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId);
         Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
         Task AddRecipe(Recipe recipe);
+        Task AddRecipeImage(int recipeId, Guid authorId, byte[] image, bool isPrimary);
+        Task<RecipeImage> GetPrimaryRecipeImage(int recipeId);
         Task DeleteRecipe(int recipeId);
         Task PermanentlyDeleteRecipe(int recipeId);
         #endregion region

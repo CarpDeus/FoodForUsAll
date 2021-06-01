@@ -69,6 +69,16 @@ namespace UseCases
             await _recipeRepository.AddRecipe(recipe);
         }
 
+        public async Task AddRecipeImage(int recipeId, Guid authorId, byte[] image, bool isPrimary)
+        {
+            await _recipeRepository.AddRecipeImage(recipeId, authorId, image, isPrimary);
+        }
+
+        public async Task<RecipeImage> GetPrimaryRecipeImage(int recipeId)
+        {
+            return await _recipeRepository.GetPrimaryRecipeImage(recipeId);
+        }
+
         public async Task DeleteRecipe(int recipeId)
         {
             await _recipeRepository.DeleteRecipe(recipeId);

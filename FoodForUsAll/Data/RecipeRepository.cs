@@ -264,11 +264,95 @@ namespace DbData
                 conn.Close();
             }
 
+            await AddRecipeImage(recipe.Id, recipe.AuthorId, recipe.PrimaryImage.Image, true);
+
             foreach (IngredientSection ingredientSection in recipe.IngredientSections)
                 await AddIngredientSection(recipe.Id, ingredientSection);
 
             foreach (InstructionSection instructionSection in recipe.InstructionSections)
                 await AddInstructionSection(recipe.Id, instructionSection);
+        }
+
+        public async Task AddRecipeImage(int recipeId, Guid authorId, byte[] image, bool isPrimary)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  INSERT INTO Recipes.[Image] (
+	                        RecipeId,
+	                        AuthorId,
+	                        IsPrimary,
+	                        [Image]
+                        )
+                        OUTPUT Inserted.Id
+                        VALUES (
+                            @RecipeId,
+	                        @AuthorId,
+	                        @IsPrimary,
+	                        @Image
+                        );";
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+                cmd.Parameters.AddWithValue("@AuthorId", authorId);
+                cmd.Parameters.Add("@IsPrimary", SqlDbType.Bit).Value = isPrimary;
+                cmd.Parameters.AddWithValue("@Image", image);
+
+                await conn.OpenAsync();
+
+                conn.Close();
+            }
+        }
+
+        public async Task<RecipeImage> GetPrimaryRecipeImage(int recipeId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id,
+	                        IsSampleImage,
+	                        AuthorId,
+	                        IsApproved,
+	                        [Image]
+                        FROM Recipes.[Image]
+                        WHERE RecipeId = @RecipeId
+                        AND IsPrimary = 1;";
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        bool isSampleImage = (bool)rdr["IsSampleImage"];
+                        Guid authorId = new Guid((string)rdr["AuthorId"]);
+                        bool isApproved = (bool)rdr["IsApproved"];
+                        byte[] image = (byte[])rdr["Image"];
+
+                        return
+                            new RecipeImage
+                            {
+                                Id = id,
+                                IsSampleImage = isSampleImage,
+                                AuthorId = authorId,
+                                IsApproved = isApproved,
+                                Image = image,
+                            };
+                    }
+                }
+            }
+
+            return null;
         }
 
         public async Task DeleteRecipe(int recipeId)
@@ -975,6 +1059,7 @@ namespace DbData
                         string name = rdr["Name"].ToString();
                         string description = rdr["Description"].ToString();
                         Guid authorId = new Guid((string)rdr["AuthorId"]);
+                        RecipeImage primaryRecipeImage = await GetPrimaryRecipeImage(id);
                         recipes.Add(
                             new Recipe
                             {
@@ -982,6 +1067,7 @@ namespace DbData
                                 Name = name,
                                 Description = description,
                                 AuthorId = authorId,
+                                PrimaryImage = primaryRecipeImage,
                                 IngredientSections = await GetIngredientSectionsByRecipeId(id),
                                 InstructionSections = await GetInstructionSectionsByRecipeId(id),
                             });

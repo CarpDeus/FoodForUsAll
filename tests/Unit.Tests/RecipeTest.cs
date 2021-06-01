@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,29 @@ namespace Unit.Tests
         {
             _recipeRepository = new InMemoryData.RecipeRepository();
             _recipeUseCases = new RecipeUseCases(_recipeRepository);
+            _sampleImageBMP = File.ReadAllBytes("SampleBMPImage_190kbmb.bmp");
+            _sampleImageGIF = File.ReadAllBytes("SampleGIFImage_40kbmb.gif");
+            _sampleImageJPG = File.ReadAllBytes("SampleJPGImage_50kbmb.jpg");
+            _sampleImagePNG = File.ReadAllBytes("SamplePNGImage_100kbmb.png");
+        }
+
+        [Test]
+        public async Task AddPrimaryRecipeImage()
+        {
+            //Arrange
+            Recipe recipe = new()
+            {
+                AuthorId = _defaultAuthor,
+                Name = "Mac N Cheeze",
+                Description = "Cheezy and delicious",
+            };
+            await _recipeUseCases.AddRecipe(recipe);
+
+            //Act
+            await _recipeUseCases.AddRecipeImage(recipe.Id, _defaultAuthor, _sampleImageBMP, true);
+
+            //Assert
+            Assert.That(_recipeUseCases.GetPrimaryRecipeImage(recipe.Id).Id != 0);
         }
 
         [Test]
@@ -22,7 +46,7 @@ namespace Unit.Tests
             //Arrange
             Recipe recipe = new()
             {
-                AuthorId = _firstAuthor,
+                AuthorId = _defaultAuthor,
                 Name = "Fish and Chipz",
                 Description = "Fish and potatoes deep fried to perfection.",
             };
@@ -360,6 +384,10 @@ namespace Unit.Tests
 
         static Guid _defaultAuthor = new("00000000-0000-0000-0000-000000000000");
         static Guid _firstAuthor = new("11111111-1111-1111-1111-111111111111");
+        static byte[] _sampleImageBMP;
+        static byte[] _sampleImageGIF;
+        static byte[] _sampleImageJPG;
+        static byte[] _sampleImagePNG;
 
         #endregion
     }

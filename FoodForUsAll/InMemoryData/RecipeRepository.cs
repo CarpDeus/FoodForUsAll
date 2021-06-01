@@ -10,6 +10,7 @@ namespace InMemoryData
     {
         readonly Dictionary<int, Ingredient> _ingredients = new Dictionary<int, Ingredient>();
         readonly Dictionary<int, Recipe> _recipes = new Dictionary<int, Recipe>();
+        readonly Dictionary<int, RecipeImage> _recipeImages = new Dictionary<int, RecipeImage>();
         readonly Dictionary<int, RecipeSection> _recipeSections = new Dictionary<int, RecipeSection>();
         readonly Dictionary<int, RecipeIngredient> _recipeIngredients = new Dictionary<int, RecipeIngredient>();
         readonly Dictionary<int, RecipeInstruction> _recipeInstructions = new Dictionary<int, RecipeInstruction>();
@@ -92,6 +93,8 @@ namespace InMemoryData
             if (recipe.Id == 0)
                 recipe.Id = (_recipes.Count == 0) ? 10000 : _recipes.Max(x => x.Key) + 1;
 
+            AddRecipeImage(recipe.Id, recipe.AuthorId, recipe.PrimaryImage.Image, true);
+
             foreach (IngredientSection ingredientSection in recipe.IngredientSections)
             {
                 AddIngredientSection(recipe.Id, ingredientSection);
@@ -119,6 +122,28 @@ namespace InMemoryData
             }
 
             _recipes[recipe.Id] = recipe;
+        }
+
+        public async Task AddRecipeImage(int recipeId, Guid authorId, byte[] image, bool isPrimary)
+        {
+            int id = 0;
+            if (!isPrimary)
+                id = (_recipeImages.Count == 0) ? 100000 : _recipeImages.Max(x => x.Key) + 1;
+
+            RecipeImage recipeImage = new() { Id = id, AuthorId = authorId, Image = image, };
+
+            if (isPrimary)
+                _recipes[recipeId].PrimaryImage = recipeImage;
+            else
+            {
+                _recipeImages[id] = recipeImage;
+                _recipes[recipeId].SecondaryImages.Add(recipeImage);
+            }
+        }
+
+        public async Task<RecipeImage> GetPrimaryRecipeImage(int recipeId)
+        {
+            return _recipes[recipeId].PrimaryImage;
         }
 
         public async Task DeleteRecipe(int recipeId)
