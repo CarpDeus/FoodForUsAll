@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -15,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 
 using Domain;
 using UseCases;
+using Services;
 
 namespace UI.Pages
 {
@@ -25,7 +25,7 @@ namespace UI.Pages
         [Inject]
         IRecipeUseCases RecipeUseCases { get; set; }
         [Inject]
-        IWebHostEnvironment Environment { get; set; }
+        IImageAdder ImageAdder { get; set; }
 
         public bool IsUploadingImage { get; private set; }
         public string ImageUploadError { get; private set; }
@@ -74,7 +74,6 @@ namespace UI.Pages
 
             try
             {
-                var trustedFileNameForFileStorage = Path.GetRandomFileName();
                 IBrowserFile file = e.File;
 
                 if (e.File.Size > _fileSizeLimit)
@@ -89,17 +88,9 @@ namespace UI.Pages
                     return;
                 }
 
-                string path = Path.Combine(@"wwwroot\unsafe_uploads", trustedFileNameForFileStorage);
+                var imageByteArray = await ImageAdder.Validate(file, _fileSizeLimit);
 
-                await using (FileStream fs = new(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024, FileOptions.DeleteOnClose))
-                {
-                    await file.OpenReadStream(_fileSizeLimit)
-                        .CopyToAsync(fs);
-                    fs.Position = 0;
-                    var imageByteArray = new byte[fs.Length];
-                    fs.Read(imageByteArray, 0, imageByteArray.Length);
-                    await RecipeUseCases.AddRecipeImage(Recipe.Id, trustedFileNameForFileStorage, Recipe.AuthorId, imageByteArray, true);
-                }
+                await RecipeUseCases.AddRecipeImage(Recipe.Id, Guid.NewGuid().ToString(), Recipe.AuthorId, imageByteArray, true);
             }
             catch (Exception ex)
             {
@@ -115,7 +106,7 @@ namespace UI.Pages
 
         #region private
 
-        readonly long _fileSizeLimit = 3145728; // 3MB
+        readonly long _fileSizeLimit = 2097152; // 2MB
         readonly string[] _allowedImageTypes = { "image/jpg", "image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/spng" };
 
         #endregion

@@ -95,6 +95,7 @@ namespace UI
                     Configuration["AppSettings:MailServer"],
                     Configuration["AppSettings:SmtpNoReplyUsername"],
                     Configuration["AppSettings:SmtpNoReplyPassword"]));
+            services.AddTransient<IImageAdder, ImageAdder>();
 
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             services.AddScoped<IRecipeUseCases, RecipeUseCases>();

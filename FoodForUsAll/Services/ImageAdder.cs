@@ -1,29 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Services
 {
-	// ??? Intended for the ultimate migration to saving images to the file system instead of the database.
     public class ImageAdder : IImageAdder
 	{
-		public ImageAdder(string connectionString)
+		public async Task<byte[]> Validate(IBrowserFile browserFile, long fileSizeLimit)
 		{
-			_foodForUsAllConnectionString = connectionString;
+			var trustedFileNameForFileStorage = Path.GetRandomFileName();
+			string path = Path.Combine(@"wwwroot\unsafe_uploads", trustedFileNameForFileStorage);
+
+			await using (FileStream fs = new(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024, FileOptions.DeleteOnClose))
+			{
+				await browserFile.OpenReadStream(fileSizeLimit)
+					.CopyToAsync(fs);
+				fs.Position = 0;
+				var imageByteArray = new byte[fs.Length];
+				fs.Read(imageByteArray, 0, imageByteArray.Length);
+				return imageByteArray;
+			}
 		}
-
-		public async Task Add()
-		{
-			if (_foodForUsAllConnectionString == null)
-				throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
-		}
-
-		#region private
-
-		readonly string _foodForUsAllConnectionString;
-
-		#endregion
 	}
 }
