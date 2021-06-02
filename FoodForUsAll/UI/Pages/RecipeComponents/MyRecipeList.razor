@@ -6,7 +6,15 @@
 <div style="margin-bottom: 20px;">
 @if (!AddNewRecipeIsVisible)
 {
-    <InputText @bind-Value=@SearchString /><button @onclick="(async () => Search())">Search</button> <button @onclick="(async () => SetAddNewRecipeIsVisible())">Add New Recipe</button>
+    <div class="row">
+        <div class="col-4">
+            <InputText @bind-Value=@SearchString /> <button @onclick="(async () => Search())">Search</button>
+        </div>
+        <div class="col-6"></div>
+        <div class="col-2">
+            <button @onclick="(async () => SetAddNewRecipeIsVisible())">Add New Recipe</button>
+        </div>
+    </div>
 }
 else
 {
