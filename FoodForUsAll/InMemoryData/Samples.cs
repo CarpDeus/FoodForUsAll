@@ -24,7 +24,7 @@ namespace InMemoryData
             _sampleImageSecondary2JPG = File.ReadAllBytes("wwwroot/images/SampleSecondary2RecipeImage.jpg");
             _sampleImageSecondary3JPG = File.ReadAllBytes("wwwroot/images/SampleSecondary3RecipeImage.jpg");
 
-            RecipeImage primaryRecipeImage = new RecipeImage { AuthorId = _defaultAuthor, Image = _sampleImagePrimaryJPG, };
+            RecipeImage primaryRecipeImage = new RecipeImage { Name = "test.asd", AuthorId = _defaultAuthor, Image = _sampleImagePrimaryJPG, };
 
             List<Ingredient> ingredients = new List<Ingredient>();
             List<Recipe> recipes = new List<Recipe>();

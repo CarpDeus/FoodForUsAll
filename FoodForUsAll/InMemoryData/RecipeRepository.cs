@@ -93,7 +93,7 @@ namespace InMemoryData
             if (recipe.Id == 0)
                 recipe.Id = (_recipes.Count == 0) ? 10000 : _recipes.Max(x => x.Key) + 1;
 
-            AddRecipeImage(recipe.Id, recipe.AuthorId, recipe.PrimaryImage.Image, true);
+            AddRecipeImage(recipe.Id, recipe.PrimaryImage.Name, recipe.AuthorId, recipe.PrimaryImage.Image, true);
 
             foreach (IngredientSection ingredientSection in recipe.IngredientSections)
             {
@@ -124,13 +124,11 @@ namespace InMemoryData
             _recipes[recipe.Id] = recipe;
         }
 
-        public async Task AddRecipeImage(int recipeId, Guid authorId, byte[] image, bool isPrimary)
+        public async Task AddRecipeImage(int recipeId, string name, Guid authorId, byte[] image, bool isPrimary)
         {
-            int id = 0;
-            if (!isPrimary)
-                id = (_recipeImages.Count == 0) ? 100000 : _recipeImages.Max(x => x.Key) + 1;
+            int id = (_recipeImages.Count == 0) ? 100000 : _recipeImages.Max(x => x.Key) + 1;
 
-            RecipeImage recipeImage = new() { Id = id, AuthorId = authorId, Image = image, };
+            RecipeImage recipeImage = new() { Id = id, Name = name, AuthorId = authorId, Image = image, };
 
             if (isPrimary)
                 _recipes[recipeId].PrimaryImage = recipeImage;

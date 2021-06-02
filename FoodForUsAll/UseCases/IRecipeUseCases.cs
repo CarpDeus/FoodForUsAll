@@ -19,7 +19,7 @@ namespace UseCases
         Task ChangeRecipeName(int recipeId, string newRecipeName);
         Task ChangeRecipeDescription(int recipeId, string newRecipeDescription);
         Task AddRecipe(Recipe recipe);
-        Task AddRecipeImage(int recipeId, Guid authorId, byte[] image, bool isPrimary);
+        Task AddRecipeImage(int recipeId, string name, Guid authorId, byte[] image, bool isPrimary);
         Task<RecipeImage> GetPrimaryRecipeImage(int recipeId);
         Task DeleteRecipe(int recipeId);
         Task<Recipe> GetRecipe(int recipeId);

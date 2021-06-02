@@ -264,7 +264,7 @@ namespace DbData
                 conn.Close();
             }
 
-            await AddRecipeImage(recipe.Id, recipe.AuthorId, recipe.PrimaryImage.Image, true);
+            await AddRecipeImage(recipe.Id, recipe.PrimaryImage.Name, recipe.AuthorId, recipe.PrimaryImage.Image, true);
 
             foreach (IngredientSection ingredientSection in recipe.IngredientSections)
                 await AddIngredientSection(recipe.Id, ingredientSection);
@@ -273,7 +273,7 @@ namespace DbData
                 await AddInstructionSection(recipe.Id, instructionSection);
         }
 
-        public async Task AddRecipeImage(int recipeId, Guid authorId, byte[] image, bool isPrimary)
+        public async Task AddRecipeImage(int recipeId, string name, Guid authorId, byte[] image, bool isPrimary)
         {
             if (_foodForUsAllConnectionString == null)
                 throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
@@ -287,6 +287,7 @@ namespace DbData
 	                        RecipeId,
 	                        AuthorId,
 	                        IsPrimary,
+                            [Name],
 	                        [Image]
                         )
                         OUTPUT Inserted.Id
@@ -294,11 +295,13 @@ namespace DbData
                             @RecipeId,
 	                        @AuthorId,
 	                        @IsPrimary,
+                            @Name,
 	                        @Image
                         );";
                 cmd.Parameters.AddWithValue("@RecipeId", recipeId);
                 cmd.Parameters.AddWithValue("@AuthorId", authorId);
                 cmd.Parameters.Add("@IsPrimary", SqlDbType.Bit).Value = isPrimary;
+                cmd.Parameters.AddWithValue("@Name", name);
                 cmd.Parameters.AddWithValue("@Image", image);
 
                 await conn.OpenAsync();
@@ -322,6 +325,7 @@ namespace DbData
 	                        IsSampleImage,
 	                        AuthorId,
 	                        IsApproved,
+                            [Name],
 	                        [Image]
                         FROM Recipes.[Image]
                         WHERE RecipeId = @RecipeId
@@ -337,6 +341,7 @@ namespace DbData
                         bool isSampleImage = (bool)rdr["IsSampleImage"];
                         Guid authorId = new Guid((string)rdr["AuthorId"]);
                         bool isApproved = (bool)rdr["IsApproved"];
+                        string name = rdr["Name"].ToString();
                         byte[] image = (byte[])rdr["Image"];
 
                         return
@@ -346,6 +351,7 @@ namespace DbData
                                 IsSampleImage = isSampleImage,
                                 AuthorId = authorId,
                                 IsApproved = isApproved,
+                                Name = name,
                                 Image = image,
                             };
                     }

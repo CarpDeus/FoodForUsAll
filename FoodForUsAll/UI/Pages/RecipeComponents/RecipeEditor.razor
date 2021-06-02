@@ -18,25 +18,27 @@ else
                     <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="data:image/bmp;base64, @((Recipe.PrimaryImage.Image != null)?Convert.ToBase64String(Recipe.PrimaryImage.Image):"")" alt="..." /></p>
                 </div>
             </div>
+            <InputFile OnChange="@UploadPrimaryImage"/>
+            <span class="alert-danger">@ImageUploadError</span>
         </div>
         <div class="col-md-3 mb-5">
             <div class="card h-100">
                 <div class="card-body">
-                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Dishes/pexels-marvin-ozz-2474661.jpg" alt="..." /></p>
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" alt="..." /></p>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-5">
             <div class="card h-100">
                 <div class="card-body">
-                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Dishes/pexels-abhinav-goswami-291528.jpg" alt="..." /></p>
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" alt="..." /></p>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-5">
             <div class="card h-100">
                 <div class="card-body">
-                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="/images/Ingredients/pexels-oleg-magni-890507.jpg" alt="..." /></p>
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" alt="..." /></p>
                 </div>
             </div>
         </div>

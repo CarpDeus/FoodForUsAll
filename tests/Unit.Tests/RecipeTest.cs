@@ -34,7 +34,7 @@ namespace Unit.Tests
             await _recipeUseCases.AddRecipe(recipe);
 
             //Act
-            await _recipeUseCases.AddRecipeImage(recipe.Id, _defaultAuthor, _sampleImageBMP, true);
+            await _recipeUseCases.AddRecipeImage(recipe.Id, "image name", _defaultAuthor, _sampleImageGIF, true);
 
             //Assert
             Assert.That(_recipeUseCases.GetPrimaryRecipeImage(recipe.Id).Id != 0);
