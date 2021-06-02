@@ -89,7 +89,7 @@ namespace UI.Pages
                     return;
                 }
 
-                string path = Path.Combine(Environment.ContentRootPath, "unsafe_uploads", trustedFileNameForFileStorage);
+                string path = Path.Combine(@"wwwroot\unsafe_uploads", trustedFileNameForFileStorage);
 
                 await using (FileStream fs = new(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024, FileOptions.DeleteOnClose))
                 {
