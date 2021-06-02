@@ -23,10 +23,22 @@ else
 <div class="main">
 @if (Recipes.Count > 0)
 {
+<div style="margin-bottom: 20px;" class="container">
+<div class="row gx-4 gx-lg-5">
     @foreach (Recipe recipe in Recipes)
     {
-        <span title="@recipe.ToString()" @onclick='() => ViewRecipe(recipe.Id)'>@recipe.Name</span> <span style="font-size: 12px;" title="Edit" class="oi oi-pencil" aria-hidden="true" @onclick='() => EditRecipe(recipe.Id)'/><br />
+    <div title="@recipe.ToString()" class="col-md-3 mb-5">
+        <div class="card h-80" @onclick='() => ViewRecipe(recipe.Id)'>
+            <div class="card-body">
+                <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="data:image/bmp;base64, @((recipe.PrimaryImage.Image != null)?Convert.ToBase64String(recipe.PrimaryImage.Image):"")" alt="..." /></p>
+                <span>@recipe.Name</span>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" @onclick='() => EditRecipe(recipe.Id)'>Edit</button>
+    </div>
     }
+</div>
+</div>
 }
 else
 {
