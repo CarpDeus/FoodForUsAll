@@ -24,12 +24,18 @@
 @if (IsEditable && !AddNewIngredientNameIsVisible) { <div class="col-12"><span style="font-size: 12px;" class="oi oi-plus" aria-hidden="true" @onclick='(() => SetNewIngredientNameIsVisible())'> Add Ingredient</span></div> }
 else if (IsEditable && AddNewIngredientNameIsVisible) {
 <br />
-<div class="col-12">
+<div class="row">
     <u>New Ingredient Name</u>
-    <button @onclick="(() => SetNewIngredientNameNotVisible())">Cancel</button>
-    <button @onclick="(() => AddRecipeIngredient(RecipeId, IngredientSection.Id, NewIngredientName))">Add</button>
-    <Syncfusion.Blazor.DropDowns.SfAutoComplete TValue="string" TItem="Ingredient" Placeholder="e.g. Button Mushrooms" @bind-Value="@NewIngredientName" DataSource="@Ingredients">
-        <AutoCompleteFieldSettings Value="Name"></AutoCompleteFieldSettings>
-    </Syncfusion.Blazor.DropDowns.SfAutoComplete>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-8 col-lg-9">
+        <Syncfusion.Blazor.DropDowns.SfAutoComplete TValue="string" TItem="Ingredient" Placeholder="e.g. Button Mushrooms" @bind-Value="@NewIngredientName" DataSource="@Ingredients">
+            <AutoCompleteFieldSettings Value="Name"></AutoCompleteFieldSettings>
+        </Syncfusion.Blazor.DropDowns.SfAutoComplete>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+        <button @onclick="(() => SetNewIngredientNameNotVisible())">Cancel</button>
+        <button @onclick="(() => AddRecipeIngredient(RecipeId, IngredientSection.Id, NewIngredientName))">Add</button>
+    </div>
 </div>
 }
