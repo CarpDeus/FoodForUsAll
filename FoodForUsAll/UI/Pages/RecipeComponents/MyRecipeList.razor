@@ -38,7 +38,7 @@ else
     <div title="@recipe.ToString()" class="col-md-3 mb-5">
         <div class="card h-80" @onclick='() => ViewRecipe(recipe.Id)'>
             <div class="card-body">
-                <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="data:image/bmp;base64, @((recipe.PrimaryImage.Image != null)?Convert.ToBase64String(recipe.PrimaryImage.Image):"")" alt="..." /></p>
+                <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="@((recipe.PrimaryImage.Image != null)?"data:image/bmp;base64, "+Convert.ToBase64String(recipe.PrimaryImage.Image):@"images\ImageMissing.jpg")" /></p>
                 <span>@recipe.Name</span>
             </div>
         </div>

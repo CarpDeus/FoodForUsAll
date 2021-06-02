@@ -13,6 +13,9 @@ namespace InMemoryData
 
         static Guid _defaultAuthor = new Guid("00000000-0000-0000-0000-000000000000");
         static byte[] _sampleImagePrimaryJPG;
+        static byte[] _sampleBeefAndBaconPNG;
+        static byte[] _sampleChickenMushroomCurryPNG;
+        static byte[] _sampleChickenJalfreziPNG;
         static byte[] _sampleImageSecondary1JPG;
         static byte[] _sampleImageSecondary2JPG;
         static byte[] _sampleImageSecondary3JPG;
@@ -20,11 +23,14 @@ namespace InMemoryData
         static Samples()
         {
             _sampleImagePrimaryJPG = File.ReadAllBytes("wwwroot/images/SamplePrimaryRecipeImage.jpg");
+            _sampleBeefAndBaconPNG = File.ReadAllBytes("wwwroot/images/sampleBeefAndBacon.png");
+            _sampleChickenMushroomCurryPNG = File.ReadAllBytes("wwwroot/images/sampleChickenMushroonCurry.png");
+            _sampleChickenJalfreziPNG = File.ReadAllBytes("wwwroot/images/sampleChickenJalfrezi.png");
             _sampleImageSecondary1JPG = File.ReadAllBytes("wwwroot/images/SampleSecondary1RecipeImage.jpg");
             _sampleImageSecondary2JPG = File.ReadAllBytes("wwwroot/images/SampleSecondary2RecipeImage.jpg");
             _sampleImageSecondary3JPG = File.ReadAllBytes("wwwroot/images/SampleSecondary3RecipeImage.jpg");
 
-            RecipeImage primaryRecipeImage = new RecipeImage { Name = "test.asd", AuthorId = _defaultAuthor, Image = _sampleImagePrimaryJPG, };
+            RecipeImage primaryBeefAndBaconImage = new RecipeImage { Name = "test.asd", AuthorId = _defaultAuthor, Image = _sampleBeefAndBaconPNG, };
 
             List<Ingredient> ingredients = new List<Ingredient>();
             List<Recipe> recipes = new List<Recipe>();
@@ -84,10 +90,13 @@ namespace InMemoryData
                 AuthorId = _defaultAuthor,
                 Name = "Beef and Bacon",
                 Description = "A rich beef, mushroom, onion, and bacon dish served over noodles.",
-                PrimaryImage = primaryRecipeImage,
+                PrimaryImage = primaryBeefAndBaconImage,
                 IngredientSections = ingredientSections1,
                 InstructionSections = instructionSections1,
             });
+
+
+            RecipeImage primaryChickenMushroomCurryImage = new RecipeImage { Name = "test.asd", AuthorId = _defaultAuthor, Image = _sampleChickenMushroomCurryPNG, };
 
             Ingredient longGrainRiceIngredient = new() { Name = "Long Grain Rice", Description = "" };
             Ingredient cuminSeedsIngredient = new() { Name = "Cumin Seeds", Description = "" };
@@ -174,11 +183,13 @@ namespace InMemoryData
                 AuthorId = _defaultAuthor,
                 Name = "Chicken Mushroom Curry",
                 Description = "A declicious rendition of a Indian take out favorite.",
-                PrimaryImage = primaryRecipeImage,
+                PrimaryImage = primaryChickenMushroomCurryImage,
                 IngredientSections = ingredientSections2,
                 InstructionSections = instructionSections2,
             });
 
+
+            RecipeImage primaryChickenJalfreziImage = new RecipeImage { Name = "test.asd", AuthorId = _defaultAuthor, Image = _sampleChickenJalfreziPNG, };
 
             Ingredient dicedTomatoesIngredient = new() { Name = "Diced Tomatoes", Description = "" };
             Ingredient chiliPowderIngredient = new() { Name = "Chili Powder", Description = "" };
@@ -241,7 +252,7 @@ namespace InMemoryData
                 AuthorId = _defaultAuthor,
                 Name = "Chicken Jalfrezi",
                 Description = "A declicious rendition of a Indian take out favorite.",
-                PrimaryImage = primaryRecipeImage,
+                PrimaryImage = primaryChickenJalfreziImage,
                 IngredientSections = ingredientSections3,
                 InstructionSections = instructionSections3,
             });
