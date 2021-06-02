@@ -2,8 +2,8 @@
 @inherits UI.Pages.RecipeIngredientsEditorModel
 @using Domain;
 <div class="row" style="text-indent: 15px">
-    @if (IsEditable) { <div class="col-3"><b><u>Quantity</u></b></div> } else { <div class="col-3 text-right"><b><u>Quantity</u></b></div> }
-    <div class="col-9"><b><u>Ingredient</u></b></div>
+    @if (IsEditable) { <div class="col-sm-2 col-lg-3 col-xl-2"><b><u>Quantity</u></b></div> } else { <div class="col-sm-2 col-lg-3 col-xl-2 text-right"><b><u>Quantity</u></b></div> }
+    <div class="col-sm-10 col-lg-9 col-xl-10"><b><u>Ingredient</u></b></div>
 </div>
 @foreach(RecipeIngredient recipeIngredient in IngredientSection.RecipeIngredients.OrderBy(x => x.OrderId))
 {

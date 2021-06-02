@@ -9,7 +9,7 @@
         @if (IsEditable)
         {
             <h5>
-                <u><InputText style="width:50%" @bind-Value="@ingredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, ingredientSection.Id, ingredientSection.Name))" /></u>
+                Section: <u><InputText style="width:50%" @bind-Value="@ingredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, ingredientSection.Id, ingredientSection.Name))" /></u>
                 @if (ingredientSection.OrderId > 1)
                 {
                     <span style="font-size: 12px;" class="oi oi-caret-top" aria-hidden="true" />
@@ -31,7 +31,7 @@
         {
             <div class="pl-xl-4 container">
                 @if (IsEditable)
-                {<h5>@ingredientSection.Name-<u><InputText style="width:50%" @bind-Value="@childIngredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, childIngredientSection.Id, childIngredientSection.Name))" /></u></h5>}
+                {<h5>Section: @ingredientSection.Name-<u><InputText style="width:50%" @bind-Value="@childIngredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, childIngredientSection.Id, childIngredientSection.Name))" /></u></h5>}
             else
             { <h5>@ingredientSection.Name-<u>@childIngredientSection.Name</u></h5>}
                 <CascadingValue Name="IngredientSectionId" Value="@childIngredientSection.Id">
@@ -44,7 +44,7 @@
                 {
                     <div class="pl-xl-5 container">
                         @if (IsEditable)
-                        {<h5><u><InputText style="width:50%" @bind-Value="@grandChildIngredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, grandChildIngredientSection.Id, grandChildIngredientSection.Name))" /></u></h5> }
+                        {<h5>Section: @childIngredientSection.Name-<u><InputText style="width:50%" @bind-Value="@grandChildIngredientSection.Name" @onfocusout="(async () => await IngredientSectionNameUpdated(Recipe.Id, grandChildIngredientSection.Id, grandChildIngredientSection.Name))" /></u></h5> }
                         else
                         { <h5><u>@grandChildIngredientSection.Name</u></h5>}
                         <CascadingValue Name="IngredientSectionId" Value="@grandChildIngredientSection.Id">
