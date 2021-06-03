@@ -19,31 +19,21 @@ else
                     <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="@((Recipe.PrimaryImage.Image != null)?"data:image/bmp;base64, "+Convert.ToBase64String(Recipe.PrimaryImage.Image):@"images\ImageMissing.jpg")" /></p>
                 </div>
             </div>
-            <InputFile OnChange="@UploadPrimaryImage"/>
-            <span class="alert-danger">@ImageUploadError</span>
+            <InputFile OnChange="@UploadPrimaryImage" />
         </div>
+        @foreach (RecipeImage recipeImage in Recipe.SecondaryImages)
+        {
         <div class="col-md-3 mb-5">
             <div class="card h-100">
                 <div class="card-body">
-                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" alt="..." /></p>
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" /></p>
                 </div>
             </div>
+            <!--<InputFile OnChange="" />-->
         </div>
-        <div class="col-md-3 mb-5">
-            <div class="card h-100">
-                <div class="card-body">
-                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" alt="..." /></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-5">
-            <div class="card h-100">
-                <div class="card-body">
-                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" alt="..." /></p>
-                </div>
-            </div>
-        </div>
+        }
     </div>
+    <span class="alert-danger">@ImageUploadError</span>
 </div>
 <h3>
     <InputText style="width:60%" @bind-Value="@Recipe.Name" @onfocusout="(async () => await RecipeNameUpdated(Recipe.Id, Recipe.Name))" />
