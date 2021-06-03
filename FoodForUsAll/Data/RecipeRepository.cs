@@ -361,6 +361,59 @@ namespace DbData
             return null;
         }
 
+        public async Task<List<RecipeImage>> GetSecondaryRecipeImages(int recipeId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<RecipeImage> recipeImages = new();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id,
+	                        IsSampleImage,
+	                        AuthorId,
+	                        IsApproved,
+                            [Name],
+	                        [Image]
+                        FROM Recipes.[Image]
+                        WHERE RecipeId = @RecipeId
+                        AND IsPrimary = 0;";
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        bool isSampleImage = (bool)rdr["IsSampleImage"];
+                        Guid authorId = new Guid((string)rdr["AuthorId"]);
+                        bool isApproved = (bool)rdr["IsApproved"];
+                        string name = rdr["Name"].ToString();
+                        byte[] image = (byte[])rdr["Image"];
+
+                        recipeImages.Add(
+                            new RecipeImage
+                            {
+                                Id = id,
+                                IsSampleImage = isSampleImage,
+                                AuthorId = authorId,
+                                IsApproved = isApproved,
+                                Name = name,
+                                Image = image,
+                            });
+                    }
+                }
+            }
+
+            return recipeImages;
+        }
+
         public async Task DeleteRecipe(int recipeId)
         {
             if (_foodForUsAllConnectionString == null)

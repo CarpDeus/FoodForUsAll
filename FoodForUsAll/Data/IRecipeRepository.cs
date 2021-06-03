@@ -23,6 +23,7 @@ namespace DbData
         Task AddRecipe(Recipe recipe);
         Task AddRecipeImage(int recipeId, string name, Guid authorId, byte[] image, bool isPrimary);
         Task<RecipeImage> GetPrimaryRecipeImage(int recipeId);
+        Task<List<RecipeImage>> GetSecondaryRecipeImages(int recipeId);
         Task DeleteRecipe(int recipeId);
         Task PermanentlyDeleteRecipe(int recipeId);
         #endregion region

@@ -144,6 +144,11 @@ namespace InMemoryData
             return _recipes[recipeId].PrimaryImage;
         }
 
+        public async Task<List<RecipeImage>> GetSecondaryRecipeImages(int recipeId)
+        {
+            return _recipes[recipeId].SecondaryImages;
+        }
+
         public async Task DeleteRecipe(int recipeId)
         {
             _recipes.Remove(recipeId);
