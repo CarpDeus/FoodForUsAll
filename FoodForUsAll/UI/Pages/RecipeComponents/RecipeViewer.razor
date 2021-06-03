@@ -18,7 +18,7 @@ else
                 </div>
             </div>
         </div>
-        @foreach(RecipeImage recipeImage in Recipe.SecondaryImages)
+        @foreach(RecipeImage recipeImage in Recipe.SecondaryImages.Where(x => x.Image != null))
         {
         <div class="col-md-3 mb-5">
             <div class="card h-100">

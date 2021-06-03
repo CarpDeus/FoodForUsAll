@@ -84,7 +84,7 @@ namespace UI.Pages
 
                 if (!_allowedImageTypes.Contains(file.ContentType))
                 {
-                    ImageUploadError = "Must be jpg, gif, or png type.";
+                    ImageUploadError = "Must be a jpg, gif, or png type.";
                     return;
                 }
 
