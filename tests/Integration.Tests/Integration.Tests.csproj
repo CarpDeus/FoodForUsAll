@@ -33,7 +33,24 @@
   <ItemGroup>
     <ProjectReference Include="..\..\FoodForUsAll\Data\DbData.csproj" />
     <ProjectReference Include="..\..\FoodForUsAll\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\FoodForUsAll\InMemoryData\InMemoryData.csproj" />
     <ProjectReference Include="..\..\FoodForUsAll\Services\Services.csproj" />
+    <ProjectReference Include="..\..\FoodForUsAll\UseCases\UseCases.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="SampleBMPImage_190kbmb.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleGIFImage_40kbmb.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleJPGImage_50kbmb.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SamplePNGImage_100kbmb.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -26,10 +26,20 @@ else
         <div class="col-md-3 mb-5">
             <div class="card h-100">
                 <div class="card-body">
+                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="@((recipeImage.Image != null)?"data:image/bmp;base64, "+Convert.ToBase64String(recipeImage.Image):@"images\ImageMissing.jpg")" /></p>
+                </div>
+            </div>
+        </div>
+        }
+        @if (Recipe.SecondaryImages.Count < 3)
+        {
+        <div class="col-md-3 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
                     <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" /></p>
                 </div>
             </div>
-            <!--<InputFile OnChange="" />-->
+            <InputFile OnChange="@UploadSecondaryImage" />
         </div>
         }
     </div>

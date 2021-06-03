@@ -69,6 +69,21 @@ namespace UI.Pages
 
         public async Task UploadPrimaryImage(InputFileChangeEventArgs e)
         {
+            await UploadImage(e, true);
+        }
+
+        public async Task UploadSecondaryImage(InputFileChangeEventArgs e)
+        {
+            await UploadImage(e, false);
+        }
+
+        #region private
+
+        readonly long _fileSizeLimit = 2097152; // 2MB
+        readonly string[] _allowedImageTypes = { "image/jpg", "image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/spng" };
+
+        async Task UploadImage(InputFileChangeEventArgs e, bool isPrimary)
+        {
             ImageUploadError = string.Empty;
             IsUploadingImage = true;
 
@@ -90,7 +105,7 @@ namespace UI.Pages
 
                 var imageByteArray = await ImageAdder.Validate(file, _fileSizeLimit);
 
-                await RecipeUseCases.AddRecipeImage(Recipe.Id, Guid.NewGuid().ToString(), Recipe.AuthorId, imageByteArray, true);
+                await RecipeUseCases.AddRecipeImage(Recipe.Id, Guid.NewGuid().ToString(), Recipe.AuthorId, imageByteArray, isPrimary);
             }
             catch (Exception ex)
             {
@@ -103,11 +118,6 @@ namespace UI.Pages
                 IsUploadingImage = false;
             }
         }
-
-        #region private
-
-        readonly long _fileSizeLimit = 2097152; // 2MB
-        readonly string[] _allowedImageTypes = { "image/jpg", "image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/spng" };
 
         #endregion
     }
