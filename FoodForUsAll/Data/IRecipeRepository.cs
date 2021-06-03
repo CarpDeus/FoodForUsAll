@@ -10,6 +10,7 @@ namespace DbData
         #region ingredients
         Task<Ingredient> GetIngredient(int ingredientId);
         Task<List<Ingredient>> GetAllIngredients();
+        Task<List<Ingredient>> GetAllIngredientsByAuthor(Guid authorId);
         Task AddIngredient(Ingredient ingredient);
         Task<bool> DeleteIngredient(int ingredientId);
         #endregion

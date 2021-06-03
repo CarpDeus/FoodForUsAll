@@ -31,6 +31,19 @@ namespace InMemoryData
             return _ingredients.Values.OrderBy(x => x.Name).ToList();
         }
 
+        public async Task<List<Ingredient>> GetAllIngredientsByAuthor(Guid authorId)
+        {
+            List<Recipe> recipes = _recipes.Where(x => x.Value.AuthorId == authorId).Select(x => x.Value).ToList();
+            
+            List<IngredientSection> ingredientSections = new();
+            foreach (Recipe recipe in recipes)
+                ingredientSections.AddRange(GetAllIngredientSectionsByRecipe(recipe.Id));
+
+            List<RecipeIngredient> recipeIngredients = ingredientSections.SelectMany(x => x.RecipeIngredients).ToList();
+
+            return recipeIngredients.Select(x => x.Ingredient).Distinct().OrderBy(x => x.Name).ToList();
+        }
+
         public async Task AddIngredient(Ingredient ingredient)
         {
             if (ingredient.Id == 0)

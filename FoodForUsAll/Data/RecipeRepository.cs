@@ -98,6 +98,58 @@ namespace DbData
             return ingredients;
         }
 
+        public async Task<List<Ingredient>> GetAllIngredientsByAuthor(Guid authorId)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<Ingredient> ingredients = new List<Ingredient>();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT DISTINCT
+                            i.Id,
+                            i.[Name],
+                            i.[Description]
+                        FROM
+                            Recipes.Recipe r
+                        INNER JOIN
+                            Recipes.RecipeIngredient ri
+                        ON (r.Id = ri.RecipeId)
+                        INNER JOIN
+                            Recipes.Ingredient i
+                        ON (ri.IngredientId = i.Id)
+                        WHERE r.AuthorId = @AuthorId
+                        ORDER BY i.[Name];";
+
+                cmd.Parameters.AddWithValue("@AuthorId", authorId);
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        string name = rdr["Name"].ToString();
+                        string description = rdr["Description"].ToString();
+                        ingredients.Add(
+                            new Ingredient
+                            {
+                                Id = id,
+                                Name = name,
+                                Description = description,
+                            });
+                    }
+                }
+            }
+
+            return ingredients;
+        }
+
         public async Task AddIngredient(Ingredient ingredient)
         {
             if (_foodForUsAllConnectionString == null)

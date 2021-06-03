@@ -17,9 +17,13 @@ namespace UI.Pages
         [Inject]
         IRecipeUseCases RecipeUseCases { get; set; }
 
+        public IReadOnlyList<Ingredient> Ingredients { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+
+            Ingredients = await RecipeUseCases.GetAllIngredientsByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
         }
 
         #region private

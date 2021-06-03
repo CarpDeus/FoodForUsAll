@@ -25,6 +25,11 @@ namespace UseCases
             return await _recipeRepository.GetAllIngredients();
         }
 
+        public async Task<List<Ingredient>> GetAllIngredientsByAuthor(Guid authorId)
+        {
+            return await _recipeRepository.GetAllIngredientsByAuthor(authorId);
+        }
+
         public async Task AddIngredient(Ingredient ingredient)
         {
             await _recipeRepository.AddIngredient(ingredient);

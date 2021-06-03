@@ -30,6 +30,7 @@ namespace UI.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+
             if ((await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"))).Count == 0)
             {
                 foreach (Ingredient ingredient in InMemoryData.Samples.Ingredients)
