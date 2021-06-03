@@ -31,14 +31,6 @@ namespace UI.Pages
         {
             await base.OnInitializedAsync();
 
-            if ((await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"))).Count == 0)
-            {
-                foreach (Ingredient ingredient in InMemoryData.Samples.Ingredients)
-                    await RecipeUseCases.AddIngredient(ingredient);
-                foreach (Recipe recipe in InMemoryData.Samples.Recipes)
-                    await RecipeUseCases.AddRecipe(recipe);
-            }
-
             Recipes = await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
         }
 
