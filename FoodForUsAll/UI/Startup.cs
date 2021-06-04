@@ -35,45 +35,51 @@ namespace UI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            bool isDemoMode = bool.Parse(Configuration["AppSettings:IsDemoMode"]);
 
-            services.AddAuthentication().AddFacebook(options =>
+            if (!isDemoMode)
             {
-                options.AppId = Configuration["Authentication:Facebook:AppId"];
-                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                options.AccessDeniedPath = "/AccessDeniedPathInfo";
-            });
-            services.AddAuthentication().AddGoogle(options =>
-            {
-                IConfigurationSection googleAuthNSection =
-                    Configuration.GetSection("Authentication:Google");
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection")));
+                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-                options.ClientId = googleAuthNSection["ClientId"];
-                options.ClientSecret = googleAuthNSection["ClientSecret"];
-            });
-            services.AddAuthentication().AddMicrosoftAccount(options =>
-            {
-                options.ClientId = Configuration["Authentication:Microsoft:ClientId"];
-                options.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
-                options.AuthorizationEndpoint = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize";
+                services.AddAuthentication().AddFacebook(options =>
+                {
+                    options.AppId = Configuration["Authentication:Facebook:AppId"];
+                    options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                    options.AccessDeniedPath = "/AccessDeniedPathInfo";
+                });
+                services.AddAuthentication().AddGoogle(options =>
+                {
+                    IConfigurationSection googleAuthNSection =
+                        Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                });
+                services.AddAuthentication().AddMicrosoftAccount(options =>
+                {
+                    options.ClientId = Configuration["Authentication:Microsoft:ClientId"];
+                    options.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
+                    options.AuthorizationEndpoint = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize";
                 // options.AccessDeniedPath = "/AccessDeniedPathInfo";
-            });
-            services.AddAuthentication().AddTwitter(twitterOptions =>
-            {
-                twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerAPIKey"];
-                twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
-                twitterOptions.RetrieveUserDetails = true;
-            });
+                });
+                services.AddAuthentication().AddTwitter(twitterOptions =>
+                {
+                    twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerAPIKey"];
+                    twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+                    twitterOptions.RetrieveUserDetails = true;
+                });
 
-            services.AddAuthorization(options =>
-            {
+                services.AddAuthorization(options =>
+                {
                 // By default, all incoming requests will be authorized according to the default policy
                 options.FallbackPolicy = options.DefaultPolicy;
-            });
+                });
+
+            }
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -88,16 +94,22 @@ namespace UI
 
             services.AddScoped<UI.Pages.RecipesState>();
 
-            services.AddTransient<IRecipeRepository, InMemoryData.RecipeRepository>();
-            //services.AddTransient<IRecipeRepository>(x => new DbData.RecipeRepository(Configuration["ConnectionStrings:DefaultConnection"]));
-            services.AddTransient<IEmailSender>(x =>
-                new EmailSender(
-                    Configuration["AppSettings:MailServer"],
-                    Configuration["AppSettings:SmtpNoReplyUsername"],
-                    Configuration["AppSettings:SmtpNoReplyPassword"]));
-            services.AddTransient<IImageAdder, ImageAdder>();
+            if (isDemoMode)
+                services.AddTransient<IRecipeRepository, InMemoryData.RecipeRepository>();
+            else
+            {
+                services.AddTransient<IRecipeRepository>(x => new DbData.RecipeRepository(Configuration["ConnectionStrings:DefaultConnection"]));
 
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+                services.AddTransient<IEmailSender>(x =>
+                    new EmailSender(
+                        Configuration["AppSettings:MailServer"],
+                        Configuration["AppSettings:SmtpNoReplyUsername"],
+                        Configuration["AppSettings:SmtpNoReplyPassword"]));
+                services.AddTransient<IImageAdder, ImageAdder>();
+
+                services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+            }
+
             services.AddScoped<IRecipeUseCases, RecipeUseCases>();
             services.AddScoped<ClipboardService>();
 
@@ -109,6 +121,8 @@ namespace UI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            bool isDemoMode = bool.Parse(Configuration["AppSettings:IsDemoMode"]);
+
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Configuration["LicenseKeys:SyncfusionLicense"]);
 
             if (env.IsDevelopment())
@@ -128,8 +142,11 @@ namespace UI
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            if (!isDemoMode)
+            {
+                app.UseAuthentication();
+                app.UseAuthorization();
+            }
 
             app.UseEndpoints(endpoints =>
             {
