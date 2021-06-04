@@ -1,6 +1,9 @@
 ﻿@page "/IngredientSectionsEditor/{IngredientSectionId}"
 @inherits UI.Pages.IngredientSectionsEditorModel
 @using Domain;
+
+@if (Recipe != null)
+{
 @if (IsEditable)
 {<span style="font-size: 12px;" class="pl-1 oi oi-plus" aria-hidden="true" @onclick='(async () => await AddNewIngredientSection(Recipe.Id, null))'> Add Section</span>}
 @foreach (IngredientSection ingredientSection in @Recipe.IngredientSections.OrderBy(x => x.OrderId))
@@ -58,4 +61,5 @@
             </div>
         }
     </div>
+}
 }

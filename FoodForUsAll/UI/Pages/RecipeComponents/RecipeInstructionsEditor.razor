@@ -1,6 +1,9 @@
 ﻿@page "/RecipeInstructionsEditor/{InstructionSectionId}"
 @inherits UI.Pages.RecipeInstructionsEditorModel
 @using Domain;
+
+@if (InstructionSection != null)
+{
 <div class="row" style="text-indent: 15px">
     <div class="col-12"><b><u>Instruction</u></b></div>
 </div>
@@ -22,4 +25,5 @@
 }
 else if (IsEditable && AddNewInstructionDescriptionIsVisible) {
     <div class="col-12">New Instruction: <InputTextArea style="width:100%;" @bind-Value=@NewInstructionDescription @attributes="InputTextAreaAttributes" /><button @onclick="(() => SetNewInstructionNameNotVisible())">Cancel</button><button @onclick="(() => AddRecipeInstruction(RecipeId, InstructionSection.Id, NewInstructionDescription))">Add</button></div>
+}
 }

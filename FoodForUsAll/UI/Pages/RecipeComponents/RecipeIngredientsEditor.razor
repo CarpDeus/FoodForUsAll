@@ -1,6 +1,9 @@
 ﻿@page "/RecipeIngredientsEditor/{IngredientSectionId}"
 @inherits UI.Pages.RecipeIngredientsEditorModel
 @using Domain;
+
+@if (IngredientSection != null)
+{
 <div class="row" style="text-indent: 15px">
     @if (IsEditable) { <div class="col-sm-2 col-lg-3 col-xl-2"><b><u>Quantity</u></b></div> } else { <div class="col-sm-2 col-lg-3 col-xl-2 text-right"><b><u>Quantity</u></b></div> }
     <div class="col-sm-10 col-lg-9 col-xl-10"><b><u>Ingredient</u></b></div>
@@ -38,4 +41,5 @@ else if (IsEditable && AddNewIngredientNameIsVisible) {
         <button @onclick="(() => AddRecipeIngredient(RecipeId, IngredientSection.Id, NewIngredientName))">Add</button>
     </div>
 </div>
+}
 }
