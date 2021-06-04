@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,12 +12,15 @@ namespace UI.Pages
     [AllowAnonymous]
     public class HomeModel : PageModel
     {
-        [Inject]
-        IConfiguration Configuration { get; set; }
+        private readonly IConfiguration _configuration;
+        public HomeModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public async Task<IActionResult> OnGet()
         {
-            bool isDemoMode = bool.Parse(Configuration["AppSettings:IsDemoMode"]);
+            bool isDemoMode = bool.Parse(_configuration["AppSettings:IsDemoMode"]);
 
             if (User.Identity.IsAuthenticated || isDemoMode)
                 return Redirect("/Index");

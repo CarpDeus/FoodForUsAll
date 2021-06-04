@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Domain;
 using UseCases;
 
@@ -14,11 +15,15 @@ namespace UI.Pages
     public partial class MyRecipeListModel: ComponentBase
     {
         [Inject]
+        IConfiguration Configuration { get; set; }
+        [Inject]
         public RecipesState RecipesState { get; set; }
         [Inject]
         IRecipeUseCases RecipeUseCases { get; set; }
         [Inject]
         NavigationManager NavManager { get; set; }
+
+        public bool IsDemoMode { get; private set; }
 
         public IReadOnlyList<Recipe> Recipes { get; set; }
 
@@ -30,6 +35,8 @@ namespace UI.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+
+            IsDemoMode = bool.Parse(Configuration["AppSettings:IsDemoMode"]);
 
             Recipes = await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
         }

@@ -383,6 +383,8 @@ namespace DbData
                         WHERE RecipeId = @RecipeId
                         AND IsPrimary = 1;";
 
+                cmd.Parameters.AddWithValue("@RecipeId", recipeId);
+
                 await conn.OpenAsync();
 
                 using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
@@ -391,7 +393,7 @@ namespace DbData
                     {
                         int id = Convert.ToInt32(rdr["Id"]);
                         bool isSampleImage = (bool)rdr["IsSampleImage"];
-                        Guid authorId = new Guid((string)rdr["AuthorId"]);
+                        Guid authorId = (Guid)rdr["AuthorId"];
                         bool isApproved = (bool)rdr["IsApproved"];
                         string name = rdr["Name"].ToString();
                         byte[] image = (byte[])rdr["Image"];
@@ -444,7 +446,7 @@ namespace DbData
                     {
                         int id = Convert.ToInt32(rdr["Id"]);
                         bool isSampleImage = (bool)rdr["IsSampleImage"];
-                        Guid authorId = new Guid((string)rdr["AuthorId"]);
+                        Guid authorId = (Guid)rdr["AuthorId"];
                         bool isApproved = (bool)rdr["IsApproved"];
                         string name = rdr["Name"].ToString();
                         byte[] image = (byte[])rdr["Image"];
@@ -1169,7 +1171,7 @@ namespace DbData
                         int id = Convert.ToInt32(rdr["Id"]);
                         string name = rdr["Name"].ToString();
                         string description = rdr["Description"].ToString();
-                        Guid authorId = new Guid((string)rdr["AuthorId"]);
+                        Guid authorId = (Guid)rdr["AuthorId"];
                         RecipeImage primaryRecipeImage = await GetPrimaryRecipeImage(id);
                         recipes.Add(
                             new Recipe
