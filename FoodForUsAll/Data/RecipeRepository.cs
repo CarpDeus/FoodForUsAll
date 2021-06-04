@@ -369,6 +369,8 @@ namespace DbData
 
                 await conn.OpenAsync();
 
+                await cmd.ExecuteNonQueryAsync();
+
                 conn.Close();
             }
         }
