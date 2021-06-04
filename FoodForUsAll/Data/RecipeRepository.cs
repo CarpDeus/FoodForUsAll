@@ -273,9 +273,20 @@ namespace DbData
                 return null;
         }
 
+        public async Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthor(Guid authorId)
+        {
+            return await GetRecipeCards("AND Recipe.AuthorId = '" + authorId.ToString() + "'");
+        }
+
         public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId)
         {
             return await GetRecipes("AND Recipe.AuthorId = '" + authorId.ToString() + "'");
+        }
+
+        public async Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
+        {
+            List<RecipeCard> recipeCards = await GetRecipeCards("AND Recipe.AuthorId = '" + authorId.ToString() + "'");
+            return recipeCards.Where(x => x.Name.Contains(searchString) || x.Description.Contains(searchString)).ToList();
         }
 
         public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
@@ -1139,6 +1150,55 @@ namespace DbData
         #region private
 
         readonly string _foodForUsAllConnectionString;
+
+        async Task<List<RecipeCard>> GetRecipeCards(string whereClause)
+        {
+            if (_foodForUsAllConnectionString == null)
+                throw new ArgumentException("Unable to locate the FoodForUsAllConnectionString withing the configuration file.");
+
+            List<RecipeCard> recipeCards = new();
+
+            using (var conn = new SqlConnection(_foodForUsAllConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText =
+                    @"  SELECT
+                            Id,
+                            [Name],
+                            [Description],
+                            AuthorId
+                        FROM Recipes.Recipe
+                        WHERE DeletedDate IS NULL ";
+                cmd.CommandText += whereClause;
+                cmd.CommandText += ";";
+
+                await conn.OpenAsync();
+
+                using (SqlDataReader rdr = await cmd.ExecuteReaderAsync())
+                {
+                    while (await rdr.ReadAsync())
+                    {
+                        int id = Convert.ToInt32(rdr["Id"]);
+                        string name = rdr["Name"].ToString();
+                        string description = rdr["Description"].ToString();
+                        Guid authorId = (Guid)rdr["AuthorId"];
+                        RecipeImage primaryRecipeImage = await GetPrimaryRecipeImage(id);
+                        recipeCards.Add(
+                            new RecipeCard
+                            {
+                                Id = id,
+                                Name = name,
+                                Description = description,
+                                AuthorId = authorId,
+                                PrimaryImage = primaryRecipeImage,
+                            });
+                    }
+                }
+            }
+
+            return recipeCards;
+        }
 
         async Task<List<Recipe>> GetRecipes(string whereClause)
         {

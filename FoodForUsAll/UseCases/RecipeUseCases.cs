@@ -59,9 +59,19 @@ namespace UseCases
             return await _recipeRepository.GetRecipe(recipeId);
         }
 
+        public async Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthor(Guid recipeId)
+        {
+            return await _recipeRepository.GetRecipeCardsByAuthor(recipeId);
+        }
+
         public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid recipeId)
         {
             return await _recipeRepository.GetRecipesByAuthor(recipeId);
+        }
+
+        public async Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
+        {
+            return await _recipeRepository.GetRecipeCardsByAuthorAndSearchByNameOrDescription(authorId, searchString);
         }
 
         public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)

@@ -27,6 +27,7 @@ namespace UI.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+
             Recipe = await RecipeUseCases.GetRecipe(RecipeId);
         }
 
@@ -38,6 +39,8 @@ namespace UI.Pages
         public async Task AddNewIngredientSection(int recipeId, int? parentIngredientSectionId)
         {
             await RecipeUseCases.AddIngredientSection(recipeId, new() { }, parentIngredientSectionId);
+
+            Recipe = await RecipeUseCases.GetRecipe(RecipeId);
         }
 
         public async Task IngredientSectionNameUpdated(int recipeId, int ingredientSectionId, string newIngredientSectionName)

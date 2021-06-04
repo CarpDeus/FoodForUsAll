@@ -31,9 +31,10 @@ namespace UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            IngredientSection = await RecipeUseCases.GetIngredientSection(RecipeId, IngredientSectionId);
-            Ingredients = await RecipeUseCases.GetAllIngredients();
             await base.OnInitializedAsync();
+
+            Ingredients = await RecipeUseCases.GetAllIngredients();
+            IngredientSection = await RecipeUseCases.GetIngredientSection(RecipeId, IngredientSectionId);
         }
 
         protected override async Task OnParametersSetAsync()
@@ -58,6 +59,8 @@ namespace UI.Pages
             RecipeIngredient recipeIngredient = new() { Quantity = string.Empty, Ingredient = ingredient, };
             await RecipeUseCases.AddRecipeIngredient(recipeId, sectionId, recipeIngredient);
             SetNewIngredientNameNotVisible();
+            Ingredients = await RecipeUseCases.GetAllIngredients();
+            IngredientSection = await RecipeUseCases.GetIngredientSection(RecipeId, IngredientSectionId);
         }
 
         public void SetNewIngredientNameIsVisible()

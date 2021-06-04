@@ -87,9 +87,37 @@ namespace InMemoryData
             return null;
         }
 
+        public async Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthor(Guid authorId)
+        {
+            return _recipes.Where(x => x.Value.AuthorId == authorId)
+                .Select(y => new RecipeCard {
+                                        Id = y.Value.Id, Name = y.Value.Name, Description = y.Value.Description,
+                                        AuthorId = y.Value.AuthorId, PrimaryImage = y.Value.PrimaryImage })
+                .ToList();
+        }
+
         public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId)
         {
             return _recipes.Where(x => x.Value.AuthorId == authorId).Select(y => y.Value).ToList();
+        }
+
+        public async Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)
+        {
+            List<RecipeCard> recipeCards = _recipes.Where(x => x.Value.AuthorId == authorId)
+                .Select(y => new RecipeCard
+                {
+                    Id = y.Value.Id,
+                    Name = y.Value.Name,
+                    Description = y.Value.Description,
+                    AuthorId = y.Value.AuthorId,
+                    PrimaryImage = y.Value.PrimaryImage
+                })
+                .ToList();
+            return recipeCards
+                .Where(
+                x => x.Name.Contains(searchString, StringComparison.InvariantCultureIgnoreCase) ||
+                x.Description.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
         }
 
         public async Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString)

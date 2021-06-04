@@ -38,6 +38,7 @@ namespace UI.Pages
         public async Task AddNewInstructionSection(int recipeId, int? parentInstructionSectionId)
         {
             await RecipeUseCases.AddInstructionSection(recipeId, new InstructionSection { }, parentInstructionSectionId);
+            Recipe = await RecipeUseCases.GetRecipe(RecipeId);
         }
 
         public async Task InstructionSectionNameUpdated(int recipeId, int instructionSectionId, string newInstructionSectionName)

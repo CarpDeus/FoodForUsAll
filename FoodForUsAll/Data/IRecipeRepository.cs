@@ -19,7 +19,9 @@ namespace DbData
         Task UpdateRecipeName(int recipeId, string recipeName);
         Task UpdateRecipeDescription(int recipeId, string recipeDescription);
         Task<Recipe> GetRecipe(int recipeId);
+        Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthor(Guid authorId);
         Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId);
+        Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
         Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
         Task AddRecipe(Recipe recipe);
         Task AddRecipeImage(int recipeId, string name, Guid authorId, byte[] image, bool isPrimary);

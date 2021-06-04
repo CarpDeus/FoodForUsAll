@@ -25,7 +25,7 @@ namespace UI.Pages
 
         public bool IsDemoMode { get; private set; }
 
-        public IReadOnlyList<Recipe> Recipes { get; set; }
+        public IReadOnlyList<RecipeCard> Recipes { get; set; }
 
         public bool AddNewRecipeIsVisible { get; set; } = false;
         public string SearchString { get; set; }
@@ -38,7 +38,7 @@ namespace UI.Pages
 
             IsDemoMode = bool.Parse(Configuration["AppSettings:IsDemoMode"]);
 
-            Recipes = await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
+            Recipes = await RecipeUseCases.GetRecipeCardsByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
         }
 
         public async Task AddNewRecipe()
@@ -57,7 +57,7 @@ namespace UI.Pages
                 SearchString = string.Empty;
                 NewRecipeName = string.Empty;
 
-                Recipes = await RecipeUseCases.GetRecipesByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
+                Recipes = await RecipeUseCases.GetRecipeCardsByAuthor(new Guid("00000000-0000-0000-0000-000000000000"));
 
                 RecipesState.SetRecipeId(recipe.Id, true);
             }
@@ -65,7 +65,7 @@ namespace UI.Pages
 
         public async Task Search()
         {
-            Recipes = await RecipeUseCases.GetRecipesByAuthorAndSearchByNameOrDescription(new Guid("00000000-0000-0000-0000-000000000000"), SearchString ?? string.Empty);
+            Recipes = await RecipeUseCases.GetRecipeCardsByAuthorAndSearchByNameOrDescription(new Guid("00000000-0000-0000-0000-000000000000"), SearchString ?? string.Empty);
             RecipesState.SetRecipeId(0, false);
         }
 

@@ -33,7 +33,7 @@ else
 {
 <div style="margin-bottom: 20px;" class="container">
 <div class="row gx-4 gx-lg-5">
-    @foreach (Recipe recipe in Recipes)
+    @foreach (RecipeCard recipe in Recipes)
     {
     <div title="@recipe.ToString()" class="col-md-3 mb-5">
         <div class="card h-80" @onclick='() => ViewRecipe(recipe.Id)'>

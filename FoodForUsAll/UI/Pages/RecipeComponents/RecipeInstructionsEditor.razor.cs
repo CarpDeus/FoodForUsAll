@@ -32,8 +32,9 @@ namespace UI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            InstructionSection = await RecipeUseCases.GetInstructionSection(RecipeId, InstructionSectionId);
             await base.OnInitializedAsync();
+
+            InstructionSection = await RecipeUseCases.GetInstructionSection(RecipeId, InstructionSectionId);
         }
 
         protected override async Task OnParametersSetAsync()
@@ -51,6 +52,7 @@ namespace UI.Pages
             RecipeInstruction recipeInstruction = new RecipeInstruction { Description = newInstructionDescription, };
             await RecipeUseCases.AddRecipeInstruction(recipeId, sectionId, recipeInstruction);
             SetNewInstructionNameNotVisible();
+            InstructionSection = await RecipeUseCases.GetInstructionSection(RecipeId, InstructionSectionId);
         }
 
         public void SetNewInstructionNameIsVisible()

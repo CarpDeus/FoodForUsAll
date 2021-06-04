@@ -24,7 +24,9 @@ namespace UseCases
         Task<RecipeImage> GetPrimaryRecipeImage(int recipeId);
         Task DeleteRecipe(int recipeId);
         Task<Recipe> GetRecipe(int recipeId);
+        Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthor(Guid authorId);
         Task<IReadOnlyList<Recipe>> GetRecipesByAuthor(Guid authorId);
+        Task<IReadOnlyList<RecipeCard>> GetRecipeCardsByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
         Task<IReadOnlyList<Recipe>> GetRecipesByAuthorAndSearchByNameOrDescription(Guid authorId, string searchString);
         #endregion
 
