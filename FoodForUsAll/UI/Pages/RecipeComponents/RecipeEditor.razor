@@ -16,7 +16,9 @@ else
         <div class="col-md-3 mb-5">
             <div class="card h-100" style="border: 5px solid black;">
                 <div class="card-body">
-                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="@((Recipe.PrimaryImage.Image != null)?"data:image/bmp;base64, "+Convert.ToBase64String(Recipe.PrimaryImage.Image):@"images\ImageMissing.jpg")" /></p>
+                    <p class="card-text">
+                        <img class="img-fluid rounded mb-4 mb-lg-0" src="@((Recipe.PrimaryImage.Image != null)?"data:image/bmp;base64, "+Convert.ToBase64String(Recipe.PrimaryImage.Image):((IsDemoMode)?@"images\AvailableInFullVersion.jpg":@"images\ImageMissing.jpg"))" />
+                    </p>
                 </div>
             </div>
             <InputFile OnChange="@UploadPrimaryImage" />
@@ -26,7 +28,9 @@ else
         <div class="col-md-3 mb-5">
             <div class="card h-100">
                 <div class="card-body">
-                    <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="@((recipeImage.Image != null)?"data:image/bmp;base64, "+Convert.ToBase64String(recipeImage.Image):@"images\ImageMissing.jpg")" /></p>
+                    <p class="card-text">
+                        <img class="img-fluid rounded mb-4 mb-lg-0" src="@((recipeImage.Image != null)?"data:image/bmp;base64, "+Convert.ToBase64String(recipeImage.Image):((IsDemoMode)?@"images\AvailableInFullVersion.jpg":@"images\ImageMissing.jpg"))" />
+                    </p>
                 </div>
             </div>
         </div>

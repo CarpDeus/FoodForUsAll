@@ -95,7 +95,11 @@ namespace UI
             services.AddScoped<UI.Pages.RecipesState>();
 
             if (isDemoMode)
+            {
                 services.AddTransient<IRecipeRepository, InMemoryData.RecipeRepository>();
+
+                services.AddTransient<IImageAdder, InMemoryData.ImageAdder>();
+            }
             else
             {
                 services.AddTransient<IRecipeRepository>(x => new DbData.RecipeRepository(Configuration["ConnectionStrings:DefaultConnection"]));
@@ -105,7 +109,8 @@ namespace UI
                         Configuration["AppSettings:MailServer"],
                         Configuration["AppSettings:SmtpNoReplyUsername"],
                         Configuration["AppSettings:SmtpNoReplyPassword"]));
-                services.AddTransient<IImageAdder, ImageAdder>();
+
+                services.AddTransient<IImageAdder, Services.ImageAdder>();
 
                 services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
             }

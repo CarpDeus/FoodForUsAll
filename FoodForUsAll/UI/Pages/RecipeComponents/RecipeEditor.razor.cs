@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-
+using Microsoft.Extensions.Configuration;
 using Domain;
 using UseCases;
 using Services;
@@ -16,12 +16,15 @@ namespace UI.Pages
     public partial class RecipeEditorModel : ComponentBase
     {
         [Inject]
+        IConfiguration Configuration { get; set; }
+        [Inject]
         public RecipesState RecipesState { get; set; }
         [Inject]
         IRecipeUseCases RecipeUseCases { get; set; }
         [Inject]
         IImageAdder ImageAdder { get; set; }
 
+        public bool IsDemoMode { get; private set; }
         public bool IsUploadingImage { get; private set; }
         public string ImageUploadError { get; private set; }
 
@@ -35,6 +38,8 @@ namespace UI.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
+
+            IsDemoMode = bool.Parse(Configuration["AppSettings:IsDemoMode"]);
         }
 
         protected override async Task OnParametersSetAsync()
