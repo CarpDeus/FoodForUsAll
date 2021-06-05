@@ -62,27 +62,7 @@ namespace UI.Pages
             await RecipeUseCases.ChangeRecipeDescription(recipeId, newRecipeDescription);
         }
 
-        public async Task InstructionUpdated(int recipeId, int sectionId, int recipeInstructionId, string newDescription)
-        {
-            await RecipeUseCases.ChangeRecipeInstructionDescription(recipeId, sectionId, recipeInstructionId, newDescription);
-        }
-
-        public async Task UploadPrimaryImage(InputFileChangeEventArgs e)
-        {
-            await UploadImage(e, true);
-        }
-
-        public async Task UploadSecondaryImage(InputFileChangeEventArgs e)
-        {
-            await UploadImage(e, false);
-        }
-
-        #region private
-
-        readonly long _fileSizeLimit = 2097152; // 2MB
-        readonly string[] _allowedImageTypes = { "image/jpg", "image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/spng" };
-
-        async Task UploadImage(InputFileChangeEventArgs e, bool isPrimary)
+        public async Task UploadImage(InputFileChangeEventArgs e, int recipeImageId, bool isPrimary)
         {
             ImageUploadError = string.Empty;
             IsUploadingImage = true;
@@ -106,6 +86,11 @@ namespace UI.Pages
                 var imageByteArray = await ImageAdder.Validate(file, _fileSizeLimit);
 
                 await RecipeUseCases.AddRecipeImage(Recipe.Id, Guid.NewGuid().ToString(), Recipe.AuthorId, imageByteArray, isPrimary);
+
+                if (isPrimary)
+                    Recipe.PrimaryImage = await RecipeUseCases.GetPrimaryRecipeImage(Recipe.Id);
+                else
+                    Recipe.SecondaryImages = await RecipeUseCases.GetSecondaryRecipeImages(Recipe.Id);
             }
             catch (Exception ex)
             {
@@ -118,6 +103,11 @@ namespace UI.Pages
                 IsUploadingImage = false;
             }
         }
+
+        #region private
+
+        readonly long _fileSizeLimit = 4194304; // 4MB
+        readonly string[] _allowedImageTypes = { "image/jpg", "image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/spng" };
 
         #endregion
     }

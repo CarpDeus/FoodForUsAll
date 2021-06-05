@@ -327,7 +327,8 @@ namespace DbData
                 conn.Close();
             }
 
-            await AddRecipeImage(recipe.Id, recipe.PrimaryImage.Name, recipe.AuthorId, recipe.PrimaryImage.Image, true);
+            if (recipe.PrimaryImage.Image != null)
+                await AddRecipeImage(recipe.Id, recipe.PrimaryImage.Name, recipe.AuthorId, recipe.PrimaryImage.Image, true);
 
             foreach (IngredientSection ingredientSection in recipe.IngredientSections)
                 await AddIngredientSection(recipe.Id, ingredientSection);

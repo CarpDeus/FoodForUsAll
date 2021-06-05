@@ -21,7 +21,7 @@ else
                     </p>
                 </div>
             </div>
-            <InputFile OnChange="@UploadPrimaryImage" />
+            <InputFile OnChange="@((InputFileChangeEventArgs args) => UploadImage(args, (Recipe.PrimaryImage == null)?0:Recipe.PrimaryImage.Id, true))" />
         </div>
         @foreach (RecipeImage recipeImage in Recipe.SecondaryImages)
         {
@@ -33,6 +33,7 @@ else
                     </p>
                 </div>
             </div>
+            <InputFile OnChange="@((InputFileChangeEventArgs args) => UploadImage(args, recipeImage.Id, false))" />
         </div>
         }
         @if (Recipe.SecondaryImages.Count < 3)
@@ -43,7 +44,7 @@ else
                     <p class="card-text"><img class="img-fluid rounded mb-4 mb-lg-0" src="" /></p>
                 </div>
             </div>
-            <InputFile OnChange="@UploadSecondaryImage" />
+            <InputFile OnChange="@((InputFileChangeEventArgs args) => UploadImage(args, 0, false))" />
         </div>
         }
     </div>

@@ -94,6 +94,11 @@ namespace UseCases
             return await _recipeRepository.GetPrimaryRecipeImage(recipeId);
         }
 
+        public async Task<List<RecipeImage>> GetSecondaryRecipeImages(int recipeId)
+        {
+            return await _recipeRepository.GetSecondaryRecipeImages(recipeId);
+        }
+
         public async Task DeleteRecipe(int recipeId)
         {
             await _recipeRepository.DeleteRecipe(recipeId);
